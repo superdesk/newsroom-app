@@ -3,7 +3,7 @@ import logging
 
 from superdesk.ws import create_server
 
-from app_web import app
+from app import app
 
 
 if __name__ == '__main__':
