@@ -1,10 +1,17 @@
 import os
 
-from newsroom.web import NewsroomWebApp
+from newsroom.web import get_app
+
+import settings
 
 
+instance_settings = {}
 
-app = NewsroomWebApp(__name__)
+for key in dir(settings):
+    if key.isupper():
+        instance_settings.setdefault(key, getattr(settings, key))
+
+app = get_app(config=instance_settings)
 
 if __name__ == '__main__':
     host = '0.0.0.0'
