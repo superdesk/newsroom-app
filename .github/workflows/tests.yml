@@ -27,7 +27,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('dev-requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('server/dev-requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip
             ${{ runner.os }}-
@@ -38,7 +38,7 @@ jobs:
           pip install -r ../dev-requirements.txt
 
       - name: pytest
-        run: pytest --ignore=tests/aap/ --disable-pytest-warnings --cov=newsroom
+        run: pytest --disable-pytest-warnings --cov=./
 
       - name: behave
         run: behave --format progress2 --logging-level=ERROR
