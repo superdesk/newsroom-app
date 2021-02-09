@@ -9,3 +9,6 @@ ABS_PATH = Path(__file__).resolve().parent
 # extend apps
 CORE_APPS.extend([])
 BLUEPRINTS.extend([])
+
+# logging
+LOG_CONFIG_FILE = env('LOG_CONFIG_FILE', ABS_PATH / 'logging_config.yml')
