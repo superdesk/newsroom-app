@@ -23,10 +23,16 @@ Sourcefabric is happy to provide demonstrations of Newshub and other newsroom to
 ## Install
 
 ```
+cd server
+```
+
+and
+
+```
 pip install -r requirements.txt
 ```
 
-And if you want to run tests also:
+Or if you want to run tests:
 
 ```
 pip install -r dev-requirements.txt
@@ -37,12 +43,14 @@ pip install -r dev-requirements.txt
 Use npm (or yarn) to install packages:
 
 ```
+cd client
 npm install
 ```
 
 ## Run application
 
 ```
+cd server
 honcho start -p 5050
 ```
 
@@ -60,10 +68,14 @@ It will start webpack dev server, python app is configured to make use of it.
 
 ## Test Python app
 
+```
+cd server
+```
+
 There is syntax and code style checker:
 
 ```
-flake8 newsroom 
+flake8 
 ```
 
 And tests:
@@ -71,6 +83,13 @@ And tests:
 ```
 pytest
 ```
+
+and 
+
+```
+behave
+```
+
 
 ## Test Javascript code
 
@@ -91,35 +110,3 @@ for single run, or to watch for changes:
 ```
 npm run test start
 ```
-
-## Translations
-
-### Extract messages
-
-```
-$ python setup.py extract_messages
-```
-
-Will create `messages.pot` file in root folder. You can use it to update
-strings on transifex or init a new language:
-
-```
-$ python setup.py init_catalog -l <locale>
-```
-
-### Translate
-
-We translate on [transifex](https://www.transifex.com/sourcefabric/superdesk-newshub/).
-
-### Adding translated po files
-
-Download translated messages file from transifex and save it
-in locale dir: `newsroom/translations/<locale>/LC_MESSAGES/messages.po`.
-
-Then run compile to generate mo files for server messages:
-
-```
-$ python setup.py compile_catalog -l <locale>
-```
-
-When compiled you can add locale to `settings.LANGUAGES` to enable it.
