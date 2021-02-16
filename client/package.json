@@ -1,11 +1,7 @@
 {
   "scripts": {
     "start": "webpack-dev-server --progress --colors --content-base dist --host 0.0.0.0",
-    "build": "webpack --progress --profile --colors",
-    "lint": "eslint *.js assets --ext .js --ext .jsx",
-    "fix": "eslint *.js assets --ext .js --ext .jsx --fix",
-    "test": "karma start --single-run",
-    "karma": "karma start"
+    "build": "webpack --progress --profile --colors"
   },
   "dependencies": {
     "newsroom-core": "0.0.1"
