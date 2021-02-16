@@ -27,3 +27,5 @@ config.resolveLoader.modules.push(
     path.resolve(__dirname, 'node_modules'),
     path.resolve(__dirname, 'node_modules', 'newsroom-core', 'node_modules'),
 )
+
+module.exports = config
