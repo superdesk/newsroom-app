@@ -1,2 +1,2 @@
 // custom client js
-alert('alert from client code')
+// alert('alert from client code')
