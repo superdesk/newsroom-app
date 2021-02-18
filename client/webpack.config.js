@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const config = require('newsroom-core/webpack.config')
 
+// modify webpack paths to serve them from modules folder
 for (const [name, path] of Object.entries(config.entry)) {
     if (Array.isArray(path)) {
         // common modules
