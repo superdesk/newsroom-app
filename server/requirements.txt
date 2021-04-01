@@ -1,1 +1,1 @@
-git+git://github.com/pablopunk/newsroom-core.git@SDAN-697#egg=Newsroom-Core
+git+git://github.com/superdesk/newsroom-core.git@develop#egg=Newsroom-Core
