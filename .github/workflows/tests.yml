@@ -42,3 +42,24 @@ jobs:
 
       - name: behave
         run: behave --format progress2 --logging-level=ERROR
+
+
+  client:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: client
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+
+      - name: install
+        run: npm install
+
+      - name: build
+        run: npm run build
