@@ -15,7 +15,8 @@ def before_all(context):
         'INSTALLED_APPS': [],
         'ELASTICSEARCH_FORCE_REFRESH': True,
         'NEWS_API_ENABLED': True,
-        'NEWS_API_TIME_LIMIT_DAYS': 100
+        'NEWS_API_TIME_LIMIT_DAYS': 100,
+        'NEWS_API_BEHAVE_TESTS': True,
     }
     setup_before_all(context, config, app_factory=get_app)
 
@@ -26,7 +27,8 @@ def before_scenario(context, scenario):
         'INSTALLED_APPS': [],
         'ELASTICSEARCH_FORCE_REFRESH': True,
         'NEWS_API_ENABLED': True,
-        'NEWS_API_TIME_LIMIT_DAYS': 100
+        'NEWS_API_TIME_LIMIT_DAYS': 100,
+        'NEWS_API_BEHAVE_TESTS': True,
     }
 
     if 'rate_limit' in scenario.tags:
