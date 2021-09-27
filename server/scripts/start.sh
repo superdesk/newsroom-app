@@ -11,10 +11,14 @@ until $(curl --output /dev/null --silent --head --fail "${ELASTICSEARCH_URL}"); 
 done
 echo 'done.'
 
-which python3
-
 # app init
 python3 manage.py create_user admin@localhost.com admin admin admin true
 python3 manage.py elastic_init
+
+if [[ -d dump ]]; then
+    echo 'installing demo data'
+    mongorestore -h mongo --gzip dump
+    python3 manage.py index_from_mongo --all
+fi
 
 exec "$@"

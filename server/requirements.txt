@@ -1,4 +1,4 @@
-git+git://github.com/superdesk/newsroom-core.git@develop#egg=Newsroom-Core
+git+git://github.com/petrjasek/newsroom-core.git@docker#egg=Newsroom-Core
 
 # Copied from `newsroom-core` for now (until feedparser is fixed)
 WTForms==2.2.1
