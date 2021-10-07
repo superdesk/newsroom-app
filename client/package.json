@@ -4,7 +4,7 @@
     "build": "webpack --progress --profile --colors"
   },
   "dependencies": {
-    "newsroom-core": "github:superdesk/newsroom-core#develop"
+    "newsroom-core": "github:petrjasek/newsroom-core#stt-updated"
   },
   "devDependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
