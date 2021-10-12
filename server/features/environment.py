@@ -11,6 +11,7 @@ def get_app(*args, **kwargs):
 
 def before_all(context):
     config = {
+        'BEHAVE': True,
         'CORE_APPS': CORE_APPS,
         'INSTALLED_APPS': [],
         'ELASTICSEARCH_FORCE_REFRESH': True,
@@ -23,6 +24,7 @@ def before_all(context):
 
 def before_scenario(context, scenario):
     config = {
+        'BEHAVE': True,
         'CORE_APPS': CORE_APPS,
         'INSTALLED_APPS': [],
         'ELASTICSEARCH_FORCE_REFRESH': True,
