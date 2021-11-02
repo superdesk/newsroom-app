@@ -32,6 +32,7 @@ services:
         environment:
             - WEB_CONCURRENCY=2
             - WEBPACK_SERVER_URL=http://172.17.0.1:8080
+            - WEBPACK_ASSETS_URL=http://localhost:8080
             - MONGO_URI=mongodb://mongo/newsroom
             - CONTENTAPI_MONGO_URI=mongodb://mongo/newsroom
             - ELASTICSEARCH_URL=http://elastic:9200

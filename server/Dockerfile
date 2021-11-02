@@ -32,5 +32,5 @@ ENV TZ=Europe/London
 
 COPY . .
 
-ENTRYPOINT [ "/opt/newsroom/scripts/start.sh" ]
+ENTRYPOINT ["sh", "/opt/newsroom/scripts/start.sh"]
 CMD ["honcho", "start", "-p 5050"]
