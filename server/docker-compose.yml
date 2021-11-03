@@ -25,6 +25,8 @@ services:
             - "5150:5150"
         networks:
             - newsroom
+        volumes:
+            - ./dump:/opt/newsroom/dump
         depends_on:
             - elastic
             - redis
