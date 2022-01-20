@@ -1,0 +1,10 @@
+{% block name %}{% if name %}{{ name }},{% endif %}{% endblock %}
+{% block content %}{% endblock %}
+
+{% block footer %}
+Salutations,
+L'équipe {{config.SITE_NAME}}
+
+{{config.SITE_NAME}} est développé par Sourcefabric et la communauté {{app_name}}.
+http://sourcefabric.org
+{% endblock %}
