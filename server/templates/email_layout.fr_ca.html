@@ -1,0 +1,10 @@
+{% block name %}{% if name %}<p>{{ name }},</p>
+
+{% endif %}{% endblock %}
+{% block content %}{% endblock %}
+
+{% block footer %}
+<p>Salutations,</p>
+<p>L'équipe {{config.SITE_NAME}}</p>
+<p>{{config.SITE_NAME}} est développé par <a href="https://sourcefabric.org">Sourcefabric</a> et la communauté {{app_name}}.</p>
+{% endblock %}
