@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "webpack-dev-server --progress --colors --content-base dist --host 0.0.0.0",
-    "build": "webpack --progress --profile --colors"
+    "build": "export NODE_ENV=production && webpack --progress --profile --colors"
   },
   "dependencies": {
     "newsroom-core": "github:superdesk/newsroom-core#develop"
