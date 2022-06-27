@@ -1,4 +1,4 @@
-git+git://github.com/superdesk/newsroom-core.git@develop#egg=Newsroom-Core
+git+https://github.com/superdesk/newsroom-core.git@v2.2-rc2#egg=Newsroom-Core
 
 # Copied from `newsroom-core` for now (until feedparser is fixed)
 WTForms==2.2.1
@@ -11,7 +11,3 @@ honcho>=1.0.1
 gunicorn>=20.0.4,<20.1
 PyRTF3>=0.47.5
 xhtml2pdf>=0.2.4
-
-# Use develop branches for now (to fix `feedparser` issue)
-git+git://github.com/superdesk/superdesk-core.git@develop#egg=superdesk-core
-git+git://github.com/superdesk/superdesk-planning.git@develop#egg=superdesk-planning
