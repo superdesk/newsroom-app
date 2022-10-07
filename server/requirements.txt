@@ -319,7 +319,7 @@ superdesk-core @ git+https://github.com/superdesk/superdesk-core.git@develop
     # via
     #   -r requirements.in
     #   newsroom-core
-superdesk-planning==2.3.1
+superdesk-planning @ git+https://github.com/superdesk/superdesk-planning.git@develop
     # via newsroom-core
 svglib==1.4.1
     # via xhtml2pdf
