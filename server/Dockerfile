@@ -10,6 +10,8 @@ libxml2-dev libxslt-dev \
 libjpeg-dev zlib1g-dev \
 # magic
 libmagic-dev \
+# windows
+dos2unix \
 && rm -rf /var/lib/apt/lists/* 
 
 # setup venv
@@ -32,5 +34,8 @@ ENV TZ=Europe/London
 
 COPY . .
 
-ENTRYPOINT [ "/opt/newsroom/scripts/start.sh" ]
+# fix line endings when running docker on windows
+RUN dos2unix scripts/start.sh
+
+ENTRYPOINT ["sh", "/opt/newsroom/scripts/start.sh"]
 CMD ["honcho", "start", "-p 5050"]
