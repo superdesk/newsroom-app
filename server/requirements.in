@@ -1,3 +1,1 @@
-git+https://github.com/superdesk/newsroom-core.git@v2.3.0#egg=Newsroom-Core
-git+https://github.com/superdesk/superdesk-core.git@v2.6.0#egg=Superdesk-Core
-git+https://github.com/superdesk/superdesk-planning.git@v2.6.0#egg=superdesk-planning
+git+https://github.com/superdesk/newsroom-core.git@v2.4.0#egg=Newsroom-Core
