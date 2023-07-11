@@ -6,26 +6,17 @@ services:
         environment:
             - discovery.type=single-node
         network_mode: "host"
-        ports:
-            - "9200:9200"
 
     redis:
         image: redis:alpine
         network_mode: "host"
-        ports:
-            - "6379:6379"
 
     mongo:
         image: mongo:4
         network_mode: "host"
-        ports:
-            - "27017:27017"
 
     server:
         build: ./server
-        ports:
-            - "5050:5050"
-            - "5150:5150"
         network_mode: "host"
         volumes:
             - ./dump:/opt/newsroom/dump
