@@ -1,6 +1,8 @@
 #!/bin/bash
 # set -e
 
+echo 'starting Newsroom'
+
 cd /opt/newsroom/
 
 # wait for elastic to be up
@@ -20,5 +22,8 @@ if [[ -d dump ]]; then
     mongorestore -h mongo --gzip dump
     python3 manage.py index_from_mongo --all
 fi
+
+echo "WEBPACK PATH at ${WEBPACK_MANIFEST_PATH}"
+ls -l ${WEBPACK_MANIFEST_PATH}
 
 exec "$@"

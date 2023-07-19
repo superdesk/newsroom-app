@@ -5,44 +5,53 @@ services:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
         environment:
             - discovery.type=single-node
-        network_mode: "host"
         ports:
             - "9200:9200"
+        networks:
+            - newsroom
 
     redis:
         image: redis:alpine
-        network_mode: "host"
         ports:
             - "6379:6379"
+        networks:
+            - newsroom
 
     mongo:
         image: mongo:4
-        network_mode: "host"
         ports:
             - "27017:27017"
+        networks:
+            - newsroom
 
     server:
         build: ./server
         ports:
             - "5050:5050"
             - "5150:5150"
-        network_mode: "host"
+        networks:
+            - newsroom
         volumes:
             - ./dump:/opt/newsroom/dump
+            - ./client/dist:/opt/client/dist
         depends_on:
             - elastic
             - redis
             - mongo
         environment:
             - WEB_CONCURRENCY=2
-            - WEBPACK_SERVER_URL=http://localhost:8080
+            - WEBPACK_MANIFEST_PATH=/opt/client/dist/manifest.json
             - WEBPACK_ASSETS_URL=http://localhost:8080
-            - MONGO_URI=mongodb://localhost/newsroom
-            - CONTENTAPI_MONGO_URI=mongodb://localhost:27017/newsroom
-            - ELASTICSEARCH_URL=http://localhost:9200
+            - MONGO_URI=mongodb://mongo/newsroom
+            - CONTENTAPI_MONGO_URI=mongodb://mongo:27017/newsroom
+            - ELASTICSEARCH_URL=http://elastic:9200
             - ELASTICSEARCH_INDEX=newsroom
-            - CELERY_BROKER_URL=redis://localhost:6379/1
-            - REDIS_URL=redis://localhost:6379/1
+            - CELERY_BROKER_URL=redis://redis:6379/1
+            - REDIS_URL=redis://redis:6379/1
             - DEFAULT_TIMEZONE=Europe/Prague
             - SECRET_KEY=newsroom
             - NEWSROOM_DEBUG=true
+
+networks:
+    newsroom:
+        driver: bridge

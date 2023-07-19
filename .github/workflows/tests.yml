@@ -13,29 +13,19 @@ jobs:
         working-directory: server
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: setup python
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
-      - name: docker-compose
-        run: docker-compose -f ../.actions-docker-compose.yml up -d
+      - run: docker-compose -f ../.actions-docker-compose.yml up -d
 
-      - name: cache pip
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('server/dev-requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip
-            ${{ runner.os }}-
+      - run: sudo apt-get update && sudo apt-get -y install libxml2-dev libxmlsec1-dev libxmlsec1-openssl
 
-      - name: pip install
-        run: |
+      - run: |
           python -m pip install --upgrade pip wheel setuptools
-          pip install -r dev-requirements.txt
+          python -m pip install -r dev-requirements.txt
 
       - name: pytest
         run: pytest --disable-pytest-warnings --cov=./
@@ -52,9 +42,9 @@ jobs:
         working-directory: client
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: '14.x'
 
