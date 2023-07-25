@@ -17,7 +17,7 @@ echo 'done.'
 python3 manage.py create_user admin@localhost.com admin admin admin true
 python3 manage.py elastic_init
 
-if [[ -d dump ]]; then
+if [ -d dump ]; then
     echo 'installing demo data'
     mongorestore -h mongo --gzip dump
     python3 manage.py index_from_mongo --all
