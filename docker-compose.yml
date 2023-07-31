@@ -5,22 +5,16 @@ services:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
         environment:
             - discovery.type=single-node
-        ports:
-            - "9200:9200"
         networks:
             - newsroom
 
     redis:
         image: redis:alpine
-        ports:
-            - "6379:6379"
         networks:
             - newsroom
 
     mongo:
         image: mongo:4
-        ports:
-            - "27017:27017"
         networks:
             - newsroom
 
