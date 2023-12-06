@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements.in
 #
-amqp==5.1.1
+amqp==5.2.0
     # via kombu
 arabic-reshaper==3.0.0
     # via xhtml2pdf
@@ -34,23 +34,25 @@ blinker==1.4
     #   raven
     #   sentry-sdk
     #   superdesk-core
-boto3==1.28.74
+boto3==1.33.8
     # via superdesk-core
-botocore==1.31.74
+botocore==1.33.8
     # via
     #   boto3
     #   s3transfer
 cachelib==0.9.0
     # via flask-caching
 cachetools==5.3.2
-    # via flask-oidc-ex
+    # via
+    #   flask-oidc-ex
+    #   google-auth
 celery[redis]==5.2.7
     # via superdesk-core
 cerberus==1.3.5
     # via
     #   eve
     #   superdesk-core
-certifi==2023.7.22
+certifi==2023.11.17
     # via
     #   elastic-apm
     #   elasticsearch
@@ -62,7 +64,7 @@ cffi==1.16.0
     #   cryptography
 chardet==3.0.4
     # via superdesk-core
-charset-normalizer==3.3.1
+charset-normalizer==3.3.2
     # via requests
 ciso8601==1.0.8
     # via eve-elastic
@@ -84,7 +86,7 @@ click-repl==0.3.0
     # via celery
 croniter==0.3.37
     # via superdesk-core
-cryptography==41.0.5
+cryptography==41.0.7
     # via
     #   authlib
     #   jwcrypto
@@ -92,7 +94,7 @@ cryptography==41.0.5
     #   pyhanko-certvalidator
 cssselect2==0.7.0
     # via svglib
-deepdiff==6.6.1
+deepdiff==6.7.1
     # via superdesk-planning
 deprecated==1.2.14
     # via
@@ -152,6 +154,8 @@ flask-wtf==0.14.3
     # via newsroom-core
 future==0.18.3
     # via python-twitter
+google-auth==2.6.6
+    # via newsroom-core
 gunicorn==20.0.4
     # via newsroom-core
 hachoir==3.0a3
@@ -166,9 +170,9 @@ httplib2==0.22.0
     # via oauth2client
 icalendar==4.0.9
     # via superdesk-planning
-idna==3.4
+idna==3.6
     # via requests
-importlib-resources==6.1.0
+importlib-resources==6.1.1
     # via limits
 isodate==0.6.1
     # via python3-saml
@@ -197,7 +201,7 @@ kombu==5.2.4
     #   superdesk-core
 ldap3==2.5.2
     # via superdesk-core
-limits==3.6.0
+limits==3.7.0
     # via flask-limiter
 lxml==4.6.5
     # via
@@ -232,16 +236,18 @@ pillow==9.2.0
     #   reportlab
     #   superdesk-core
     #   xhtml2pdf
-prompt-toolkit==3.0.39
+prompt-toolkit==3.0.41
     # via click-repl
-pyasn1==0.5.0
+pyasn1==0.5.1
     # via
     #   ldap3
     #   oauth2client
     #   pyasn1-modules
     #   rsa
 pyasn1-modules==0.3.0
-    # via oauth2client
+    # via
+    #   google-auth
+    #   oauth2client
 pycparser==2.21
     # via cffi
 pyhanko==0.18.0
@@ -250,8 +256,6 @@ pyhanko-certvalidator==0.22.0
     # via
     #   pyhanko
     #   xhtml2pdf
-pyjwt==2.4.0
-    # via superdesk-core
 pymemcache==4.0.0
     # via superdesk-core
 pymongo==3.11.4
@@ -264,7 +268,7 @@ pyparsing==3.1.1
     # via
     #   httplib2
     #   pyrtf3
-pypdf==3.17.0
+pypdf==3.17.1
     # via xhtml2pdf
 pypng==0.20220715.0
     # via qrcode
@@ -279,7 +283,7 @@ python-dateutil==2.7.5
     #   croniter
     #   icalendar
     #   superdesk-core
-python-jwt==4.0.0
+python-jwt==4.1.0
     # via flask-oidc-ex
 python-magic==0.4.27
     # via superdesk-core
@@ -313,7 +317,6 @@ regex==2020.7.14
 reportlab==3.6.13
     # via
     #   newsroom-core
-    #   superdesk-core
     #   svglib
     #   xhtml2pdf
 requests==2.31.0
@@ -326,8 +329,10 @@ requests==2.31.0
 requests-oauthlib==1.3.1
     # via python-twitter
 rsa==4.9
-    # via oauth2client
-s3transfer==0.7.0
+    # via
+    #   google-auth
+    #   oauth2client
+s3transfer==0.8.2
     # via boto3
 sentry-sdk[flask]==1.5.12
     # via newsroom-core
@@ -340,12 +345,13 @@ six==1.16.0
     #   bcrypt
     #   flask-limiter
     #   flask-oidc-ex
+    #   google-auth
     #   html5lib
     #   isodate
     #   oauth2client
     #   python-bidi
     #   python-dateutil
-superdesk-core @ git+https://github.com/superdesk/superdesk-core.git@v2.7.0-rc1
+superdesk-core @ git+https://github.com/superdesk/superdesk-core.git@develop
     # via newsroom-core
 superdesk-planning @ git+https://github.com/superdesk/superdesk-planning.git@v2.7.0-rc1
     # via newsroom-core
@@ -376,12 +382,12 @@ urllib3==1.25.11
     #   requests
     #   sentry-sdk
     #   superdesk-core
-vine==5.0.0
+vine==5.1.0
     # via
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.9
+wcwidth==0.2.12
     # via prompt-toolkit
 webencodings==0.5.1
     # via
