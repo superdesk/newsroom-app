@@ -1,4 +1,4 @@
-web: gunicorn -b 0.0.0.0:$PORT -w 3 newsroom.web.app:app
+web: gunicorn -c gunicorn_config.py newsroom.web.app:app
 websocket: python -m newsroom.web.ws
 worker: celery -A newsroom.web.worker.celery worker
 beat: celery -A newsroom.web.worker.celery beat
