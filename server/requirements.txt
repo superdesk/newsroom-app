@@ -21,7 +21,7 @@ async-timeout==4.0.3
     # via redis
 authlib==0.14.3
     # via superdesk-core
-babel==2.13.1
+babel==2.14.0
     # via flask-babel
 bcrypt==3.1.7
     # via superdesk-core
@@ -34,9 +34,9 @@ blinker==1.4
     #   raven
     #   sentry-sdk
     #   superdesk-core
-boto3==1.33.8
+boto3==1.34.33
     # via superdesk-core
-botocore==1.33.8
+botocore==1.34.33
     # via
     #   boto3
     #   s3transfer
@@ -52,7 +52,7 @@ cerberus==1.3.5
     # via
     #   eve
     #   superdesk-core
-certifi==2023.11.17
+certifi==2024.2.2
     # via
     #   elastic-apm
     #   elasticsearch
@@ -86,7 +86,7 @@ click-repl==0.3.0
     # via celery
 croniter==0.3.37
     # via superdesk-core
-cryptography==41.0.7
+cryptography==42.0.2
     # via
     #   authlib
     #   jwcrypto
@@ -104,7 +104,7 @@ draftjs-exporter[lxml]==2.1.7
     # via superdesk-core
 ecs-logging==2.1.0
     # via elastic-apm
-elastic-apm[flask]==6.19.0
+elastic-apm[flask]==6.20.0
     # via superdesk-core
 elasticsearch==7.13.4
     # via eve-elastic
@@ -116,7 +116,7 @@ eve-elastic==7.3.2
     #   superdesk-core
 events==0.3
     # via eve
-feedparser==6.0.10
+feedparser==6.0.11
     # via superdesk-core
 flask==1.1.2
     # via
@@ -191,7 +191,7 @@ jmespath==1.0.1
     # via
     #   boto3
     #   botocore
-jwcrypto==1.5.0
+jwcrypto==1.5.1
     # via
     #   flask-oidc-ex
     #   python-jwt
@@ -236,7 +236,7 @@ pillow==9.2.0
     #   reportlab
     #   superdesk-core
     #   xhtml2pdf
-prompt-toolkit==3.0.41
+prompt-toolkit==3.0.43
     # via click-repl
 pyasn1==0.5.1
     # via
@@ -256,6 +256,8 @@ pyhanko-certvalidator==0.22.0
     # via
     #   pyhanko
     #   xhtml2pdf
+pyjwt==2.4.0
+    # via superdesk-core
 pymemcache==4.0.0
     # via superdesk-core
 pymongo==3.11.4
@@ -268,7 +270,7 @@ pyparsing==3.1.1
     # via
     #   httplib2
     #   pyrtf3
-pypdf==3.17.1
+pypdf==4.0.1
     # via xhtml2pdf
 pypng==0.20220715.0
     # via qrcode
@@ -291,7 +293,7 @@ python-twitter==3.5
     # via superdesk-core
 python3-saml==1.15.0
     # via newsroom-core
-pytz==2023.3.post1
+pytz==2024.1
     # via
     #   celery
     #   eve-elastic
@@ -317,6 +319,7 @@ regex==2020.7.14
 reportlab==3.6.13
     # via
     #   newsroom-core
+    #   superdesk-core
     #   svglib
     #   xhtml2pdf
 requests==2.31.0
@@ -332,7 +335,7 @@ rsa==4.9
     # via
     #   google-auth
     #   oauth2client
-s3transfer==0.8.2
+s3transfer==0.10.0
     # via boto3
 sentry-sdk[flask]==1.5.12
     # via newsroom-core
@@ -351,7 +354,7 @@ six==1.16.0
     #   oauth2client
     #   python-bidi
     #   python-dateutil
-superdesk-core @ git+https://github.com/superdesk/superdesk-core.git@develop
+superdesk-core @ git+https://github.com/superdesk/superdesk-core.git@release/2.7
     # via newsroom-core
 superdesk-planning @ git+https://github.com/superdesk/superdesk-planning.git@v2.7.0-rc1
     # via newsroom-core
@@ -361,7 +364,7 @@ tinycss2==1.2.1
     # via
     #   cssselect2
     #   svglib
-typing-extensions==4.8.0
+typing-extensions==4.9.0
     # via
     #   limits
     #   qrcode
@@ -387,7 +390,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.2.12
+wcwidth==0.2.13
     # via prompt-toolkit
 webencodings==0.5.1
     # via
