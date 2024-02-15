@@ -1,6 +1,6 @@
 from superdesk.tests.environment import setup_before_all, setup_before_scenario
 
-from newsroom.news_api.app import get_app as _get_app
+from newsroom.news_api.factory import get_app as _get_app
 from settings_newsapi import CORE_APPS
 
 
@@ -18,6 +18,7 @@ def before_all(context):
         'NEWS_API_ENABLED': True,
         'NEWS_API_TIME_LIMIT_DAYS': 100,
         'NEWS_API_BEHAVE_TESTS': True,
+        'CACHE_TYPE': 'null',
     }
     setup_before_all(context, config, app_factory=get_app)
 
@@ -31,6 +32,7 @@ def before_scenario(context, scenario):
         'NEWS_API_ENABLED': True,
         'NEWS_API_TIME_LIMIT_DAYS': 100,
         'NEWS_API_BEHAVE_TESTS': True,
+        'CACHE_TYPE': 'null',
     }
 
     if 'rate_limit' in scenario.tags:
