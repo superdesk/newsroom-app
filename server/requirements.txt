@@ -88,7 +88,7 @@ click-repl==0.3.0
     # via celery
 croniter==0.3.37
     # via superdesk-core
-cryptography==42.0.2
+cryptography==42.0.4
     # via
     #   authlib
     #   jwcrypto
@@ -100,6 +100,8 @@ deepdiff==6.7.1
     # via superdesk-planning
 deprecated==1.2.14
     # via limits
+dnspython==2.6.1
+    # via email-validator
 draftjs-exporter[lxml]==2.1.7
     # via
     #   draftjs-exporter
@@ -112,6 +114,8 @@ elastic-apm[flask]==6.20.0
     #   superdesk-core
 elasticsearch==7.13.4
     # via eve-elastic
+email-validator==2.1.1
+    # via wtforms
 eve==1.1.2
     # via superdesk-core
 eve-elastic==7.3.2
@@ -175,7 +179,9 @@ httplib2==0.22.0
 icalendar==4.0.9
     # via superdesk-planning
 idna==3.6
-    # via requests
+    # via
+    #   email-validator
+    #   requests
 importlib-resources==6.1.1
     # via limits
 isodate==0.6.1
@@ -219,6 +225,7 @@ markupsafe==2.0.1
     #   jinja2
     #   newsroom-core
     #   superdesk-core
+    #   wtforms
 mongolock==1.3.4
     # via superdesk-core
 natsort==8.4.0
@@ -416,10 +423,11 @@ wrapt==1.14.1
     # via
     #   deprecated
     #   elastic-apm
-wtforms==2.2.1
+wtforms[email]==3.1.2
     # via
     #   flask-wtf
     #   newsroom-core
+    #   wtforms
 xhtml2pdf==0.2.11
     # via newsroom-core
 xmlsec==1.3.13
