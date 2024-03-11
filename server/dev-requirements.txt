@@ -3,7 +3,7 @@
 flake8
 sphinx
 sphinx-autobuild
-pytest==8.0.2
+pytest==8.1.1
 pytest-cov==4.1.0
 pytest-mock==3.12.0
 responses>=0.10.6,<0.26
