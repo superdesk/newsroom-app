@@ -30,7 +30,6 @@ billiard==3.6.4.0
 blinker==1.7.0
     # via
     #   elastic-apm
-    #   flask
     #   flask-mail
     #   raven
     #   sentry-sdk
@@ -64,9 +63,7 @@ cffi==1.16.0
     #   bcrypt
     #   cryptography
 chardet==5.2.0
-    # via
-    #   reportlab
-    #   superdesk-core
+    # via superdesk-core
 charset-normalizer==3.3.2
     # via requests
 ciso8601==2.3.1
@@ -375,7 +372,7 @@ tinycss2==1.2.1
     # via
     #   cssselect2
     #   svglib
-typing-extensions==4.10.0
+typing-extensions==4.11.0
     # via
     #   jwcrypto
     #   limits
