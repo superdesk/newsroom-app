@@ -30,7 +30,6 @@ billiard==3.6.4.0
 blinker==1.7.0
     # via
     #   elastic-apm
-    #   flask
     #   flask-mail
     #   raven
     #   sentry-sdk
@@ -62,9 +61,7 @@ certifi==2024.2.2
 cffi==1.16.0
     # via cryptography
 chardet==5.2.0
-    # via
-    #   reportlab
-    #   superdesk-core
+    # via superdesk-core
 charset-normalizer==3.3.2
     # via requests
 ciso8601==2.3.1
@@ -336,7 +333,7 @@ reportlab==3.6.13
     #   superdesk-core
     #   svglib
     #   xhtml2pdf
-requests==2.31.0
+requests==2.32.0
     # via
     #   pyhanko
     #   pyhanko-certvalidator
