@@ -373,7 +373,7 @@ tinycss2==1.3.0
     # via
     #   cssselect2
     #   svglib
-typing-extensions==4.12.0
+typing-extensions==4.12.1
     # via
     #   jwcrypto
     #   limits
