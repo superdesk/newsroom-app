@@ -1,5 +1,5 @@
-web: gunicorn -c gunicorn_config.py newsroom.web.app:app
+web: hypercorn -c file:hypercorn_config.py newsroom.web.app:asgi_app
 websocket: python -m newsroom.web.ws
 worker: celery -A newsroom.web.worker.celery worker
 beat: celery -A newsroom.web.worker.celery beat
-newsapi: gunicorn -b "0.0.0.0:${APIPORT:-$PORT}" -w 3 newsroom.news_api.app:app
+newsapi: hypercorn -b "0.0.0.0:${APIPORT:-$PORT}" -w 3 newsroom.news_api.app:asgi_app
