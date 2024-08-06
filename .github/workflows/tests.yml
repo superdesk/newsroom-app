@@ -7,6 +7,23 @@ jobs:
 
   server:
     runs-on: ubuntu-latest
+    services:
+      redis:
+          image: redis:alpine
+          ports:
+              - "6379:6379"
+
+      mongo:
+          image: mongo:4
+          ports:
+              - "27017:27017"
+
+      elastic:
+          image: docker.elastic.co/elasticsearch/elasticsearch:7.17.23
+          ports:
+              - "9200:9200"
+          env:
+              discovery.type: single-node
 
     defaults:
       run:
@@ -18,8 +35,6 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: 3.8
-
-      - run: docker-compose -f ../.actions-docker-compose.yml up -d
 
       - run: sudo apt-get update && sudo apt-get -y install libxml2-dev libxmlsec1-dev libxmlsec1-openssl
 
