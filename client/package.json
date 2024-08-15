@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "webpack-dev-server --mode develop --progress --host 0.0.0.0",
+    "start": "webpack-dev-server --mode development --progress --host 0.0.0.0",
     "build": "webpack --mode production --progress"
   },
   "dependencies": {
