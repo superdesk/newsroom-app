@@ -1,5 +1,8 @@
 import os
 import pathlib
+from newsroom.web.default_settings import (
+    CLIENT_CONFIG,
+)
 
 SERVER_PATH = pathlib.Path(__file__).resolve().parent
 CLIENT_PATH = SERVER_PATH.parent.joinpath("client")
@@ -15,3 +18,9 @@ WIRE_AGGS = {
     "urgency": {"terms": {"field": "urgency"}},
     "place": {"terms": {"field": "place.name", "size": 50}},
 }
+
+CLIENT_CONFIG.update(
+    {
+        "collapsed_search_by_default": True,
+    }
+)
