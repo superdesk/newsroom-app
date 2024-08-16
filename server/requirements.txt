@@ -8,7 +8,7 @@ aiofiles==24.1.0
     # via
     #   quart
     #   quart-uploads
-aiohappyeyeballs==2.3.5
+aiohappyeyeballs==2.3.6
     # via aiohttp
 aiohttp==3.10.3
     # via elasticsearch
@@ -152,7 +152,6 @@ flask==3.0.3
     #   flask-webpack
     #   quart
     #   raven
-    #   sentry-sdk
 flask-caching==2.3.0
     # via newsroom-core
 flask-mail==0.10.0
@@ -243,7 +242,6 @@ markupsafe==2.1.5
     # via
     #   jinja2
     #   quart
-    #   sentry-sdk
     #   superdesk-core
     #   werkzeug
     #   wtforms
@@ -355,6 +353,7 @@ quart @ git+https://github.com/MarkLark86/quart@fix-test-client-with-utf8-url
     #   quart-rate-limiter
     #   quart-uploads
     #   quart-wtforms
+    #   sentry-sdk
     #   superdesk-core
 quart-babel @ git+https://github.com/MarkLark86/quart-babel@fix-get-format
     # via superdesk-core
@@ -394,7 +393,7 @@ rsa==4.9
     #   oauth2client
 s3transfer==0.10.2
     # via boto3
-sentry-sdk[flask]==2.6.0
+sentry-sdk[quart]==2.6.0
     # via newsroom-core
 sgmllib3k==1.0.0
     # via feedparser
