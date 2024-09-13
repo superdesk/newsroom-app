@@ -15,3 +15,5 @@ WIRE_AGGS = {
     "urgency": {"terms": {"field": "urgency"}},
     "place": {"terms": {"field": "place.name", "size": 50}},
 }
+
+SHOW_USER_REGISTER = True
