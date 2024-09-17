@@ -13,3 +13,16 @@ updates:
     directory: "/client" # Location of package manifests
     schedule:
       interval: "daily"
+
+  # updates for the 'async' branch
+  - package-ecosystem: "pip"
+    directory: "/server"
+    schedule:
+      interval: "daily"
+    target-branch: "async"
+  - package-ecosystem: "npm"
+    directory: "/client"
+    schedule:
+      interval: "daily"
+    target-branch: "async"
+
