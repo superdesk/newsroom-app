@@ -40,4 +40,4 @@ COPY . .
 RUN dos2unix scripts/start.sh
 
 ENTRYPOINT ["sh", "/opt/newsroom/scripts/start.sh"]
-CMD ["honcho", "start", "-p 5050"]
+CMD ["honcho", "start", "-p 5050", "web", "websocket"]
