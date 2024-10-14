@@ -17,3 +17,4 @@ WIRE_AGGS = {
 }
 
 SHOW_USER_REGISTER = True
+SIGNUP_EMAIL_RECIPIENTS = "admin@example.com"
