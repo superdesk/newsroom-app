@@ -2,7 +2,7 @@
 
 flake8==7.1.1
 pytest==8.3.3
-pytest-cov==5.0.0
+pytest-cov==6.0.0
 pytest-mock==3.14.0
 responses==0.25.3
 httmock==1.4.0
