@@ -10,4 +10,4 @@ httmock==1.4.0
 wooper==0.4.4
 mypy==1.13.0
 typing_extensions==4.12.2
-types-docutils==0.21.0.20241005
+types-docutils==0.21.0.20241128
