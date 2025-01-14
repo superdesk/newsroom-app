@@ -5,7 +5,7 @@ flake8==7.1.1
 pytest==8.3.4
 pytest-cov==5.0.0
 pytest-mock==3.14.0
-responses==0.25.5
+responses==0.25.6
 httmock==1.4.0
 wooper==0.4.4
 mypy==1.14.1
