@@ -30,7 +30,6 @@ billiard==4.2.1
 blinker==1.8.2
     # via
     #   elastic-apm
-    #   flask
     #   flask-mail
     #   raven
     #   sentry-sdk
@@ -87,7 +86,7 @@ click-repl==0.3.0
     # via celery
 croniter==3.0.3
     # via superdesk-core
-cryptography==43.0.1
+cryptography==44.0.1
     # via
     #   authlib
     #   jwcrypto
