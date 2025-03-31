@@ -26,5 +26,5 @@ jobs:
           cache: npm
           cache-dependency-path: client/package-lock.json
 
-      - run: npm ci
+      - run: npm install # can't use ci with different node versions
       - run: npm run build
