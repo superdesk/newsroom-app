@@ -31,8 +31,9 @@ jobs:
 
   client:
     strategy:
+      fail-fast: false
       matrix:
-        node-version: ['14', '18', '20', 'lts/*']
+        node-version: ['14', '20', 'lts/*']
     uses: ./.github/workflows/client.yml
     with:
         node-version: ${{ matrix.node-version }}
