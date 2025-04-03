@@ -420,7 +420,7 @@ types-python-dateutil==2.9.0.20241206
     # via arrow
 types-pytz==2025.1.0.20250318
     # via quart-babel
-typing-extensions==4.12.2
+typing-extensions==4.13.1
     # via
     #   asgiref
     #   hypercorn
