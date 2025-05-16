@@ -9,4 +9,4 @@ responses==0.25.7
 httmock==1.4.0
 wooper==0.4.4
 mypy==1.15.0
-types-docutils==0.21.0.20250514
+types-docutils==0.21.0.20250516
