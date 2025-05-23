@@ -37,3 +37,6 @@ jobs:
     uses: ./.github/workflows/client.yml
     with:
         node-version: ${{ matrix.node-version }}
+
+  docker:
+    uses: ./.github/workflows/docker.yml
