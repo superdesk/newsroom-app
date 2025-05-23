@@ -349,7 +349,7 @@ rsa==4.9.1
     #   oauth2client
 s3transfer==0.13.0
     # via boto3
-sentry-sdk[flask]==2.28.0
+sentry-sdk[flask]==2.19.2
     # via newsroom-core
 sgmllib3k==1.0.0
     # via feedparser
