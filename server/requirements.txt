@@ -334,7 +334,7 @@ reportlab==4.2.5
     #   superdesk-core
     #   svglib
     #   xhtml2pdf
-requests==2.32.3
+requests==2.32.4
     # via
     #   pyhanko
     #   pyhanko-certvalidator
