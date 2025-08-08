@@ -1,9 +1,11 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-python3 python3-dev python3-pip python3-venv git gcc mongo-tools mongodb-clients curl pkg-config \
+python3 python3-dev python3-pip python3-venv git gcc \
+#mongo-tools mongodb-clients
+curl pkg-config \
 # lxml
 libxml2-dev libxslt-dev \
 # PIL
@@ -15,6 +17,11 @@ dos2unix \
 # xmlsec
 pkg-config libxml2-dev libxmlsec1-dev libxmlsec1-openssl \
 && rm -rf /var/lib/apt/lists/* 
+
+# install mongodb-tools
+RUN curl -sLO https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2204-x86_64-100.12.1.deb
+RUN dpkg -i mongodb-database-tools-ubuntu2204-x86_64-100.12.1.deb
+RUN rm mongodb-database-tools-ubuntu2204-x86_64-100.12.1.deb
 
 # setup venv
 ENV VIRTUAL_ENV=/opt/venv

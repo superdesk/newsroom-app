@@ -1,13 +1,11 @@
 -r requirements.txt
 
-flake8
-sphinx
-sphinx-autobuild
-pytest==8.3.4
-pytest-cov==6.0.0
-pytest-mock==3.14.0
-responses>=0.10.6,<0.26
-httmock
-wooper
-mypy
-typing_extensions>=3.7.4
+black==25.1.0
+flake8==7.3.0
+pytest==8.4.1
+pytest-cov==6.2.1
+pytest-mock==3.14.1
+responses==0.25.7
+httmock==1.4.0
+wooper==0.4.4
+mypy==1.17.0

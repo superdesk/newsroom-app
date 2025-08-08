@@ -10,5 +10,5 @@ from newsroom.tests.fixtures import (  # noqa
     init_agenda_items,
     init_auth,
     setup_user_company,
-    init_company
+    init_company,
 )

@@ -1,5 +1,3 @@
-version: "3.2"
-
 services:
     elastic:
         image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
@@ -18,13 +16,14 @@ services:
         networks:
             - newsroom
 
-    server:
+    newsroom-server:
         build: ./server
         ports:
             - "5050:5050"
             - "5150:5150"
         networks:
             - newsroom
+            - superdesk-newsroom
         volumes:
             - ./dump:/opt/newsroom/dump
             - ./client/dist:/opt/client/dist
@@ -35,7 +34,7 @@ services:
         environment:
             - WEB_CONCURRENCY=2
             - WEBPACK_MANIFEST_PATH=/opt/client/dist/manifest.json
-            - WEBPACK_ASSETS_URL=http://localhost:8080
+            - WEBPACK_ASSETS_URL=http://localhost:8081
             - MONGO_URI=mongodb://mongo/newsroom
             - CONTENTAPI_MONGO_URI=mongodb://mongo:27017/newsroom
             - ELASTICSEARCH_URL=http://elastic:9200
@@ -49,3 +48,5 @@ services:
 networks:
     newsroom:
         driver: bridge
+    superdesk-newsroom:
+        external: true

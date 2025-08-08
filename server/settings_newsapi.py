@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from superdesk.default_settings import env, strtobool # noqa
+from superdesk.default_settings import env, strtobool  # noqa
 from newsroom.news_api.default_settings import CORE_APPS, INSTALLED_APPS, BLUEPRINTS
 
 

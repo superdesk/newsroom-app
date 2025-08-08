@@ -5,11 +5,30 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/server" # Location of package manifests
+  - package-ecosystem: "pip"
+    directory: "/server"
     schedule:
       interval: "daily"
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/client" # Location of package manifests
+
+  - package-ecosystem: "npm"
+    directory: "/client"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # async
+  - package-ecosystem: "pip"
+    directory: "/server"
+    target-branch: "async"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/client"
+    target-branch: "async"
     schedule:
       interval: "daily"
