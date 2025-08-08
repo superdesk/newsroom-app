@@ -6,7 +6,7 @@ on:
       node-version:
         description: "Node version"
         required: false
-        default: "14"
+        default: "22"
         type: string
 
 defaults:
