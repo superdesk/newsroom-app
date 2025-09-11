@@ -181,7 +181,7 @@ h11==0.16.0
     # via
     #   hypercorn
     #   wsproto
-h2==4.2.0
+h2==4.3.0
     # via hypercorn
 hachoir==3.3.0
     # via superdesk-core
