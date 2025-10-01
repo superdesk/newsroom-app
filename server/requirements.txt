@@ -259,7 +259,7 @@ multidict==6.6.4
     #   aiobotocore
     #   aiohttp
     #   yarl
-newsroom-core @ git+https://github.com/superdesk/newsroom-core.git@develop
+newsroom-core @ git+https://github.com/BrianMwangi21/newsroom-core.git@SDAN-737-fix
     # via -r requirements.in
 oauth2client==4.1.3
     # via flask-oidc-ex

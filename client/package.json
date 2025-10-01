@@ -4,7 +4,7 @@
     "build": "webpack --mode production --progress"
   },
   "dependencies": {
-    "newsroom-core": "github:superdesk/newsroom-core#develop"
+    "newsroom-core": "github:BrianMwangi21/newsroom-core#SDAN-737-fix"
   },
   "volta": {
     "node": "14.21.3"
