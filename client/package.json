@@ -4,10 +4,10 @@
     "build": "webpack --mode production --progress"
   },
   "dependencies": {
-    "newsroom-core": "github:superdesk/newsroom-core#develop"
+    "newsroom-core": "github:superdesk/newsroom-core#feature/node-22"
   },
   "volta": {
-    "node": "14.21.3"
+    "node": "22.22.0"
   },
   "overrides": {
     "react": "^17.0.2",
