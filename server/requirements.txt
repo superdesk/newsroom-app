@@ -116,7 +116,7 @@ click-repl==0.3.0
     # via celery
 croniter==6.0.0
     # via superdesk-core
-cryptography==45.0.7
+cryptography==46.0.5
     # via
     #   authlib
     #   jwcrypto
@@ -438,6 +438,7 @@ typing-extensions==4.15.0
     # via
     #   aiosignal
     #   asgiref
+    #   cryptography
     #   exceptiongroup
     #   hypercorn
     #   jwcrypto
