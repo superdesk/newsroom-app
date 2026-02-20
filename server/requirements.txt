@@ -484,7 +484,7 @@ webencodings==0.5.1
     #   tinycss2
 websockets==13.1
     # via superdesk-core
-werkzeug==3.1.5
+werkzeug==3.1.6
     # via
     #   flask
     #   quart
