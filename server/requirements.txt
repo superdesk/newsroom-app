@@ -242,7 +242,7 @@ lxml==5.3.2
     #   superdesk-core
     #   svglib
     #   xmlsec
-lxml-html-clean==0.4.2
+lxml-html-clean==0.4.4
     # via superdesk-core
 markupsafe==3.0.2
     # via
