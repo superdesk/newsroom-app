@@ -124,7 +124,7 @@ cryptography==46.0.5
     #   pyhanko-certvalidator
 cssselect2==0.8.0
     # via svglib
-deepdiff==8.6.1
+deepdiff==8.6.2
     # via superdesk-planning
 defusedxml==0.7.1
     # via pyhanko
