@@ -116,7 +116,7 @@ click-repl==0.3.0
     # via celery
 croniter==6.0.0
     # via superdesk-core
-cryptography==46.0.5
+cryptography==46.0.6
     # via
     #   authlib
     #   jwcrypto
@@ -229,9 +229,7 @@ jwcrypto==1.5.6
     #   flask-oidc-ex
     #   python-jwt
 kombu==5.4.2
-    # via
-    #   celery
-    #   superdesk-core
+    # via celery
 ldap3==2.9.1
     # via superdesk-core
 lxml==5.3.2
@@ -376,9 +374,7 @@ quart-uploads==0.0.4
 quart-wtforms==1.0.3
     # via newsroom-core
 redis==5.2.1
-    # via
-    #   celery
-    #   superdesk-core
+    # via celery
 regex==2024.11.6
     # via superdesk-core
 reportlab==4.4.3
