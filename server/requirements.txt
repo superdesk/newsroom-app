@@ -315,7 +315,7 @@ pyparsing==3.2.4
     # via
     #   httplib2
     #   pyrtf3
-pypdf==6.10.1
+pypdf==6.10.2
     # via xhtml2pdf
 pyrtf3==0.47.5
     # via newsroom-core
@@ -478,7 +478,7 @@ webencodings==0.5.1
     #   cssselect2
     #   html5lib
     #   tinycss2
-websockets==13.1
+websockets==16.0
     # via superdesk-core
 werkzeug==3.1.6
     # via
