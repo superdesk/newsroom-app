@@ -195,7 +195,7 @@ html5lib==1.1
     # via xhtml2pdf
 httplib2==0.31.0
     # via oauth2client
-hypercorn==0.17.3
+hypercorn==0.18.0
     # via
     #   newsroom-core
     #   quart
