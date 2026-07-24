@@ -224,7 +224,7 @@ jmespath==1.0.1
     #   aiobotocore
     #   boto3
     #   botocore
-jwcrypto==1.5.6
+jwcrypto==1.5.7
     # via
     #   flask-oidc-ex
     #   python-jwt
