@@ -189,7 +189,7 @@ hpack==4.2.0
     # via h2
 html5lib==1.1
     # via xhtml2pdf
-httplib2==0.31.0
+httplib2==0.32.0
     # via oauth2client
 hypercorn==0.18.0
     # via
