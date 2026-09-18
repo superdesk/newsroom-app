@@ -1,0 +1,406 @@
+{
+    "meta": {
+        "name": "Briefdesk portal demo seed",
+        "user_password_env": "PORTAL_USER_PASSWORD",
+        "default_user_password": "Briefdesk-demo-1",
+        "report_profiles": {
+            "alert": "Alert",
+            "daily_brief": "DailyBrief",
+            "country_assessment": "CountryAssessment",
+            "rfi_response": "RFIResponse"
+        }
+    },
+
+    "vocabularies": {
+        "severity": {
+            "critical": "Critical",
+            "high": "High",
+            "medium": "Medium",
+            "low": "Low",
+            "info": "Informational"
+        },
+        "threat_type": {
+            "civil_unrest": "Civil unrest",
+            "terrorism": "Terrorism",
+            "crime": "Crime",
+            "natural_hazard": "Natural hazard",
+            "transport": "Transport disruption",
+            "industrial_action": "Industrial action",
+            "cyber": "Cyber",
+            "health": "Health",
+            "political": "Political",
+            "conflict": "Armed conflict"
+        },
+        "region": {
+            "europe": "Europe",
+            "mena": "Middle East and North Africa",
+            "americas": "Americas",
+            "apac": "Asia-Pacific",
+            "ssa": "Sub-Saharan Africa"
+        },
+        "country": {
+            "pl": "Poland",
+            "de": "Germany",
+            "cz": "Czechia",
+            "fr": "France",
+            "es": "Spain",
+            "it": "Italy",
+            "nl": "Netherlands",
+            "gb": "United Kingdom",
+            "tr": "Türkiye",
+            "eg": "Egypt",
+            "ae": "United Arab Emirates",
+            "sa": "Saudi Arabia",
+            "mx": "Mexico",
+            "br": "Brazil",
+            "us": "United States"
+        },
+        "sector": {
+            "logistics": "Logistics",
+            "pharma": "Pharmaceuticals",
+            "energy": "Energy",
+            "finance": "Finance",
+            "retail": "Retail",
+            "technology": "Technology"
+        },
+        "tlp": {
+            "clear": "TLP:CLEAR",
+            "green": "TLP:GREEN",
+            "amber": "TLP:AMBER",
+            "red": "TLP:RED"
+        }
+    },
+
+    "navigations": [
+        {
+            "name": "Alerts",
+            "description": "Time critical incident alerts",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 100
+        },
+        {
+            "name": "Daily briefs",
+            "description": "The daily round up for your regions",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 200
+        },
+        {
+            "name": "Country assessments",
+            "description": "Standing country risk assessments",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 300
+        },
+        {
+            "name": "All reports",
+            "description": "Everything your package entitles you to",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 400
+        }
+    ],
+
+    "products": [
+        {
+            "name": "Nordfreight: Alerts (Alerting tier)",
+            "description": "Alerting tier. Alerts for Europe and the logistics sector.",
+            "query": "profile:Alert AND subject.code:europe AND subject.code:logistics",
+            "navigations": ["Alerts", "All reports"]
+        },
+        {
+            "name": "Nordfreight: Daily briefs (Alerting tier)",
+            "description": "Alerting tier. Daily briefs for Europe and the logistics sector.",
+            "query": "profile:DailyBrief AND subject.code:europe AND subject.code:logistics",
+            "navigations": ["Daily briefs", "All reports"]
+        },
+        {
+            "name": "Nordfreight: Country assessments (Alerting tier)",
+            "description": "Alerting tier. Country assessments for Europe and the logistics sector.",
+            "query": "profile:CountryAssessment AND subject.code:europe AND subject.code:logistics",
+            "navigations": ["Country assessments", "All reports"]
+        },
+
+        {
+            "name": "Aurelia Pharma: Alerts (Advisory tier)",
+            "description": "Advisory tier. Alerts for Europe and MENA, pharmaceuticals sector.",
+            "query": "profile:Alert AND subject.code:(europe OR mena) AND subject.code:pharma",
+            "navigations": ["Alerts", "All reports"]
+        },
+        {
+            "name": "Aurelia Pharma: Daily briefs (Advisory tier)",
+            "description": "Advisory tier. Daily briefs for Europe and MENA, pharmaceuticals sector.",
+            "query": "profile:DailyBrief AND subject.code:(europe OR mena) AND subject.code:pharma",
+            "navigations": ["Daily briefs", "All reports"]
+        },
+        {
+            "name": "Aurelia Pharma: Country assessments (Advisory tier)",
+            "description": "Advisory tier. Country assessments for Europe and MENA, pharmaceuticals sector.",
+            "query": "profile:CountryAssessment AND subject.code:(europe OR mena) AND subject.code:pharma",
+            "navigations": ["Country assessments", "All reports"]
+        },
+        {
+            "name": "Aurelia Pharma: RFI responses (Advisory tier)",
+            "description": "Advisory tier. Responses to requests for information, Europe and MENA, pharmaceuticals sector.",
+            "query": "profile:RFIResponse AND subject.code:(europe OR mena) AND subject.code:pharma",
+            "navigations": ["All reports"]
+        },
+
+        {
+            "name": "Castellan Energy: Alerts (Analyst tier)",
+            "description": "Analyst tier. Alerts for MENA and the energy sector.",
+            "query": "profile:Alert AND subject.code:mena AND subject.code:energy",
+            "navigations": ["Alerts", "All reports"]
+        },
+        {
+            "name": "Castellan Energy: Daily briefs (Analyst tier)",
+            "description": "Analyst tier. Daily briefs for MENA and the energy sector.",
+            "query": "profile:DailyBrief AND subject.code:mena AND subject.code:energy",
+            "navigations": ["Daily briefs", "All reports"]
+        },
+        {
+            "name": "Castellan Energy: Country assessments (Analyst tier)",
+            "description": "Analyst tier. Country assessments for MENA and the energy sector.",
+            "query": "profile:CountryAssessment AND subject.code:mena AND subject.code:energy",
+            "navigations": ["Country assessments", "All reports"]
+        },
+        {
+            "name": "Castellan Energy: RFI responses (Analyst tier)",
+            "description": "Analyst tier. Responses to requests for information, MENA and the energy sector.",
+            "query": "profile:RFIResponse AND subject.code:mena AND subject.code:energy",
+            "navigations": ["All reports"]
+        },
+
+        {
+            "name": "Halden Risk Intelligence: All reports (internal)",
+            "description": "Internal staff access to every released report.",
+            "query": "profile:(Alert OR DailyBrief OR CountryAssessment OR RFIResponse)",
+            "navigations": ["Alerts", "Daily briefs", "Country assessments", "All reports"]
+        },
+
+        {
+            "name": "Dashboard: Critical and high alerts",
+            "description": "Home page card only, not assigned to any company.",
+            "query": "profile:Alert AND subject.code:(critical OR high)",
+            "navigations": []
+        },
+        {
+            "name": "Dashboard: Europe",
+            "description": "Home page card only, not assigned to any company.",
+            "query": "subject.code:europe",
+            "navigations": []
+        },
+        {
+            "name": "Dashboard: Middle East and North Africa",
+            "description": "Home page card only, not assigned to any company.",
+            "query": "subject.code:mena",
+            "navigations": []
+        },
+        {
+            "name": "Dashboard: Daily briefs",
+            "description": "Home page card only, not assigned to any company.",
+            "query": "profile:DailyBrief",
+            "navigations": []
+        }
+    ],
+
+    "companies": [
+        {
+            "name": "Nordfreight Logistics",
+            "url": "https://nordfreight.example",
+            "contact_name": "Erik Dahl",
+            "contact_email": "erik.dahl@nordfreight.example",
+            "sections": {"wire": true, "agenda": true, "monitoring": true},
+            "internal": false,
+            "products": [
+                "Nordfreight: Alerts (Alerting tier)",
+                "Nordfreight: Daily briefs (Alerting tier)",
+                "Nordfreight: Country assessments (Alerting tier)"
+            ]
+        },
+        {
+            "name": "Aurelia Pharma",
+            "url": "https://aureliapharma.example",
+            "contact_name": "Hanna Weiss",
+            "contact_email": "hanna.weiss@aureliapharma.example",
+            "sections": {"wire": true, "agenda": true, "monitoring": false},
+            "internal": false,
+            "products": [
+                "Aurelia Pharma: Alerts (Advisory tier)",
+                "Aurelia Pharma: Daily briefs (Advisory tier)",
+                "Aurelia Pharma: Country assessments (Advisory tier)",
+                "Aurelia Pharma: RFI responses (Advisory tier)"
+            ]
+        },
+        {
+            "name": "Castellan Energy",
+            "url": "https://castellan.example",
+            "contact_name": "Karim Saleh",
+            "contact_email": "karim.saleh@castellan.example",
+            "sections": {"wire": true, "agenda": true, "monitoring": false},
+            "internal": false,
+            "products": [
+                "Castellan Energy: Alerts (Analyst tier)",
+                "Castellan Energy: Daily briefs (Analyst tier)",
+                "Castellan Energy: Country assessments (Analyst tier)",
+                "Castellan Energy: RFI responses (Analyst tier)"
+            ]
+        },
+        {
+            "name": "Halden Risk Intelligence",
+            "url": "https://halden.example",
+            "contact_name": "Lucia Ferro",
+            "contact_email": "lucia.ferro@halden.example",
+            "sections": {"wire": true, "agenda": true, "monitoring": true},
+            "internal": true,
+            "products": ["Halden Risk Intelligence: All reports (internal)"]
+        }
+    ],
+
+    "users": [
+        {
+            "email": "erik.dahl@nordfreight.example",
+            "first_name": "Erik",
+            "last_name": "Dahl",
+            "user_type": "company_admin",
+            "company": "Nordfreight Logistics",
+            "manage_company_topics": true
+        },
+        {
+            "email": "ines.morel@nordfreight.example",
+            "first_name": "Ines",
+            "last_name": "Morel",
+            "user_type": "public",
+            "company": "Nordfreight Logistics"
+        },
+        {
+            "email": "hanna.weiss@aureliapharma.example",
+            "first_name": "Hanna",
+            "last_name": "Weiss",
+            "user_type": "company_admin",
+            "company": "Aurelia Pharma",
+            "manage_company_topics": true
+        },
+        {
+            "email": "karim.saleh@castellan.example",
+            "first_name": "Karim",
+            "last_name": "Saleh",
+            "user_type": "company_admin",
+            "company": "Castellan Energy",
+            "manage_company_topics": true
+        },
+        {
+            "email": "lucia.ferro@halden.example",
+            "first_name": "Lucia",
+            "last_name": "Ferro",
+            "user_type": "internal",
+            "company": "Halden Risk Intelligence",
+            "manage_company_topics": true
+        }
+    ],
+
+    "topics": [
+        {
+            "label": "High severity, Poland",
+            "owner": "erik.dahl@nordfreight.example",
+            "topic_type": "wire",
+            "is_global": false,
+            "filter": {
+                "severity": ["critical", "high"],
+                "country": ["pl"]
+            },
+            "subscribers": [
+                {"user": "erik.dahl@nordfreight.example", "notification_type": "real-time"}
+            ]
+        },
+        {
+            "label": "Transport disruption, Europe",
+            "owner": "erik.dahl@nordfreight.example",
+            "topic_type": "wire",
+            "is_global": true,
+            "filter": {
+                "threat_type": ["transport"],
+                "region": ["europe"]
+            },
+            "subscribers": [
+                {"user": "erik.dahl@nordfreight.example", "notification_type": "scheduled"},
+                {"user": "ines.morel@nordfreight.example", "notification_type": "scheduled"}
+            ]
+        },
+        {
+            "label": "High severity, pharmaceuticals",
+            "owner": "hanna.weiss@aureliapharma.example",
+            "topic_type": "wire",
+            "is_global": true,
+            "filter": {
+                "severity": ["critical", "high"],
+                "sector": ["pharma"]
+            },
+            "subscribers": [
+                {"user": "hanna.weiss@aureliapharma.example", "notification_type": "real-time"}
+            ]
+        },
+        {
+            "label": "Energy infrastructure, MENA",
+            "owner": "karim.saleh@castellan.example",
+            "topic_type": "wire",
+            "is_global": true,
+            "filter": {
+                "sector": ["energy"],
+                "region": ["mena"]
+            },
+            "subscribers": [
+                {"user": "karim.saleh@castellan.example", "notification_type": "scheduled"}
+            ]
+        }
+    ],
+
+    "cards": [
+        {
+            "label": "Critical and high alerts",
+            "type": "2x2-top-news",
+            "dashboard": "newsroom",
+            "order": 1,
+            "config": {"product": "Dashboard: Critical and high alerts"}
+        },
+        {
+            "label": "Europe",
+            "type": "wire-list",
+            "dashboard": "newsroom",
+            "order": 2,
+            "config": {"product": "Dashboard: Europe", "size": 6}
+        },
+        {
+            "label": "Middle East and North Africa",
+            "type": "wire-list",
+            "dashboard": "newsroom",
+            "order": 3,
+            "config": {"product": "Dashboard: Middle East and North Africa", "size": 6}
+        },
+        {
+            "label": "Latest daily briefs",
+            "type": "3-text-only",
+            "dashboard": "newsroom",
+            "order": 4,
+            "config": {"product": "Dashboard: Daily briefs"}
+        }
+    ],
+
+    "monitoring": [
+        {
+            "name": "Nordfreight weekly digest",
+            "subject": "Briefdesk weekly digest",
+            "description": "Weekly PDF digest of Europe logistics reports for Nordfreight Logistics.",
+            "company": "Nordfreight Logistics",
+            "query": "subject.code:europe AND subject.code:logistics",
+            "alert_type": "full_text",
+            "format_type": "monitoring_pdf",
+            "is_enabled": true,
+            "always_send": true,
+            "headline_subject": false,
+            "schedule": {"interval": "weekly", "day": "mon", "time": "07:00"},
+            "users": ["erik.dahl@nordfreight.example", "ines.morel@nordfreight.example"]
+        }
+    ]
+}
