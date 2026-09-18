@@ -1,0 +1,145 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ gettext('Map') }}{% endblock %}
+
+{% block breadcrumb %}
+<span class="breadcrumb-item active">{{ gettext('Map') }}</span>
+{% endblock %}
+
+{% block sectioncss %}
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer">
+<link rel="stylesheet" href="{{ url_for('briefdesk_map.static_file', filename='briefdesk-map.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="content bd-map">
+
+    <header class="bd-map__header">
+        <div class="bd-map__header-row">
+            <div class="bd-map__heading">
+                <h1 class="bd-map__title">{{ gettext('Map') }}</h1>
+                <span class="bd-map__tag" title="{{ gettext('Preview feature, using static sample data') }}">{{ gettext('Preview') }}</span>
+            </div>
+
+            <div class="bd-map__controls">
+                {% if data.is_staff %}
+                <div class="bd-map__control">
+                    <label class="bd-map__control-label" for="bd-map-company">{{ gettext('Client') }}</label>
+                    <select id="bd-map-company" class="bd-map__select">
+                        <option value="all" {% if data.selected_company == 'all' %}selected{% endif %}>{{ gettext('All clients') }}</option>
+                        {% for company in data.companies %}
+                        <option value="{{ company.name }}" {% if data.selected_company == company.name %}selected{% endif %}>{{ company.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+
+                <div class="bd-map__control" role="group" aria-label="{{ gettext('Radius around each site') }}">
+                    <span class="bd-map__control-label" aria-hidden="true">{{ gettext('Radius') }}</span>
+                    <div class="bd-map__segmented">
+                        {% for km in data.radius_options %}
+                        <input type="radio" name="bd-map-radius" id="bd-map-radius-{{ km }}" value="{{ km }}"
+                               {% if km == data.default_radius %}checked{% endif %}>
+                        <label for="bd-map-radius-{{ km }}">{{ km }} km</label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="bd-map__control bd-map__notify">
+                    <input type="checkbox" id="bd-map-notify" class="bd-map__switch-input">
+                    <label for="bd-map-notify" class="bd-map__switch">
+                        <span class="bd-map__switch-track" aria-hidden="true"><span class="bd-map__switch-thumb"></span></span>
+                        <span class="bd-map__switch-text">{{ gettext('Notify me about alerts within') }} <span id="bd-map-notify-km">{{ data.default_radius }}</span> {{ gettext('km of my sites') }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <p class="bd-map__note">
+            {{ gettext('Mock-up for the Briefdesk demo: static site and alert coordinates, no live geo matching. Distances are computed in the browser.') }}
+        </p>
+    </header>
+
+    <div class="bd-map__body">
+        <div class="bd-map__map-wrap">
+            <div id="bd-map-canvas" class="bd-map__canvas" role="application"
+                 aria-label="{{ gettext('Map of client sites and alerts') }}"></div>
+
+            <div class="bd-map__legend" aria-hidden="true">
+                <span class="bd-map__legend-title">{{ gettext('Severity') }}</span>
+                <ul class="bd-map__legend-list">
+                    {% for severity in data.severities %}
+                    <li><span class="bd-map__legend-dot" style="background: {{ severity.color }}"></span>{{ severity.name }}</li>
+                    {% endfor %}
+                    <li><span class="bd-map__legend-site"></span>{{ gettext('Your site') }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <aside class="bd-map__panel" aria-labelledby="bd-map-panel-title">
+            <div class="bd-map__panel-head">
+                <h2 class="bd-map__panel-title" id="bd-map-panel-title">{{ gettext('Alerts near your sites') }}</h2>
+                <p class="bd-map__panel-count" id="bd-map-panel-count"></p>
+                {% if data.company %}
+                <p class="bd-map__panel-meta">
+                    <span class="bd-map__pill">{{ data.company.name }}</span>
+                    {% if data.company.tier %}<span class="bd-map__pill bd-map__pill--muted">{{ data.company.tier }}</span>{% endif %}
+                    {% if data.company.entitlement_summary %}
+                    <span class="bd-map__panel-entitlement">{{ gettext('Entitled to') }}: {{ data.company.entitlement_summary }}</span>
+                    {% endif %}
+                </p>
+                {% elif data.is_staff %}
+                <p class="bd-map__panel-meta">
+                    <span class="bd-map__pill bd-map__pill--muted">{{ gettext('All clients') }}</span>
+                </p>
+                {% endif %}
+            </div>
+
+            {% if data.severities or data.threat_types %}
+            <div class="bd-map__filters">
+                {% if data.severities %}
+                <div class="bd-map__filter-group" role="group" aria-label="{{ gettext('Filter by severity') }}">
+                    {% for severity in data.severities %}
+                    <button type="button" class="bd-chip bd-chip--severity" data-filter="severity"
+                            data-value="{{ severity.code }}" aria-pressed="true"
+                            style="--bd-chip-color: {{ severity.color }}">
+                        <span class="bd-chip__dot"></span>{{ severity.name }}
+                    </button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if data.threat_types %}
+                <div class="bd-map__filter-group" role="group" aria-label="{{ gettext('Filter by threat type') }}">
+                    {% for threat in data.threat_types %}
+                    <button type="button" class="bd-chip" data-filter="threat_type"
+                            data-value="{{ threat.code }}" aria-pressed="true">{{ threat.name }}</button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <ul class="bd-map__list" id="bd-map-list"></ul>
+            <p class="bd-map__empty" id="bd-map-empty" hidden></p>
+        </aside>
+    </div>
+
+    <div class="bd-map__toast" id="bd-map-toast" role="status" aria-live="polite" hidden></div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha512-BwHfrr4c9kmRkLw6iXFdzcdWV/PGkVgiIyIWLLlTSXzWQzxuSg4DiQUCpauz/EWjgk5TYQqX/kvn9pG1NpYfqg=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+<script>
+    window.briefdeskMapData = {{ data | tojson | safe }};
+</script>
+<script src="{{ url_for('briefdesk_map.static_file', filename='briefdesk-map.js') }}"></script>
+{% endblock %}

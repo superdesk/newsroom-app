@@ -1,0 +1,232 @@
+{
+  "companies": [
+    {
+      "name": "Nordfreight Logistics",
+      "tier": "Alerting",
+      "entitlement": {
+        "regions": ["europe"],
+        "sectors": ["logistics"]
+      },
+      "sites": [
+        {
+          "id": "nf-gdansk",
+          "name": "Gdańsk Baltic Terminal",
+          "type": "Port terminal",
+          "city": "Gdańsk",
+          "country": "pl",
+          "lat": 54.352,
+          "lon": 18.6466
+        },
+        {
+          "id": "nf-gdynia",
+          "name": "Gdynia Cold Store",
+          "type": "Cold store",
+          "city": "Gdynia",
+          "country": "pl",
+          "lat": 54.5189,
+          "lon": 18.5305
+        },
+        {
+          "id": "nf-poznan",
+          "name": "Poznań Distribution Hub",
+          "type": "Warehouse",
+          "city": "Poznań",
+          "country": "pl",
+          "lat": 52.4064,
+          "lon": 16.9252
+        },
+        {
+          "id": "nf-wroclaw",
+          "name": "Wrocław Cross-dock",
+          "type": "Warehouse",
+          "city": "Wrocław",
+          "country": "pl",
+          "lat": 51.1079,
+          "lon": 17.0385
+        },
+        {
+          "id": "nf-hamburg",
+          "name": "Hamburg Elbe Depot",
+          "type": "Port terminal",
+          "city": "Hamburg",
+          "country": "de",
+          "lat": 53.5511,
+          "lon": 9.9937
+        },
+        {
+          "id": "nf-rotterdam",
+          "name": "Rotterdam Maasvlakte Yard",
+          "type": "Port terminal",
+          "city": "Rotterdam",
+          "country": "nl",
+          "lat": 51.9244,
+          "lon": 4.4777
+        },
+        {
+          "id": "nf-prague",
+          "name": "Prague Regional Office",
+          "type": "Office",
+          "city": "Prague",
+          "country": "cz",
+          "lat": 50.0755,
+          "lon": 14.4378
+        },
+        {
+          "id": "nf-brno",
+          "name": "Brno Transit Warehouse",
+          "type": "Warehouse",
+          "city": "Brno",
+          "country": "cz",
+          "lat": 49.1951,
+          "lon": 16.6068
+        }
+      ]
+    },
+    {
+      "name": "Aurelia Pharma",
+      "tier": "Advisory",
+      "entitlement": {
+        "regions": ["europe", "mena"],
+        "sectors": ["pharma"]
+      },
+      "sites": [
+        {
+          "id": "ap-lyon",
+          "name": "Lyon Formulation Plant",
+          "type": "Plant",
+          "city": "Lyon",
+          "country": "fr",
+          "lat": 45.764,
+          "lon": 4.8357
+        },
+        {
+          "id": "ap-barcelona",
+          "name": "Barcelona Packaging Plant",
+          "type": "Plant",
+          "city": "Barcelona",
+          "country": "es",
+          "lat": 41.3874,
+          "lon": 2.1686
+        },
+        {
+          "id": "ap-milan",
+          "name": "Milan Clinical Operations",
+          "type": "Office",
+          "city": "Milan",
+          "country": "it",
+          "lat": 45.4642,
+          "lon": 9.19
+        },
+        {
+          "id": "ap-frankfurt",
+          "name": "Frankfurt Cold Chain Depot",
+          "type": "Cold store",
+          "city": "Frankfurt am Main",
+          "country": "de",
+          "lat": 50.1109,
+          "lon": 8.6821
+        },
+        {
+          "id": "ap-cairo",
+          "name": "Cairo Distribution Centre",
+          "type": "Warehouse",
+          "city": "Cairo",
+          "country": "eg",
+          "lat": 30.0444,
+          "lon": 31.2357
+        },
+        {
+          "id": "ap-dubai",
+          "name": "Dubai Regional Hub",
+          "type": "Warehouse",
+          "city": "Dubai",
+          "country": "ae",
+          "lat": 25.2048,
+          "lon": 55.2708
+        },
+        {
+          "id": "ap-istanbul",
+          "name": "Istanbul Sales Office",
+          "type": "Office",
+          "city": "Istanbul",
+          "country": "tr",
+          "lat": 41.0082,
+          "lon": 28.9784
+        }
+      ]
+    },
+    {
+      "name": "Castellan Energy",
+      "tier": "Analyst",
+      "entitlement": {
+        "regions": ["mena"],
+        "sectors": ["energy"]
+      },
+      "sites": [
+        {
+          "id": "ce-abudhabi",
+          "name": "Abu Dhabi Head Office",
+          "type": "Office",
+          "city": "Abu Dhabi",
+          "country": "ae",
+          "lat": 24.4539,
+          "lon": 54.3773
+        },
+        {
+          "id": "ce-ruwais",
+          "name": "Ruwais Export Berth",
+          "type": "Port terminal",
+          "city": "Ruwais",
+          "country": "ae",
+          "lat": 24.1103,
+          "lon": 52.7306
+        },
+        {
+          "id": "ce-dammam",
+          "name": "Dammam Tank Farm",
+          "type": "Tank farm",
+          "city": "Dammam",
+          "country": "sa",
+          "lat": 26.4207,
+          "lon": 50.0888
+        },
+        {
+          "id": "ce-jubail",
+          "name": "Jubail Petrochemical Site",
+          "type": "Plant",
+          "city": "Jubail",
+          "country": "sa",
+          "lat": 27.0174,
+          "lon": 49.6225
+        },
+        {
+          "id": "ce-yanbu",
+          "name": "Yanbu Refinery",
+          "type": "Refinery",
+          "city": "Yanbu",
+          "country": "sa",
+          "lat": 24.0895,
+          "lon": 38.0618
+        },
+        {
+          "id": "ce-alexandria",
+          "name": "Alexandria Loading Terminal",
+          "type": "Port terminal",
+          "city": "Alexandria",
+          "country": "eg",
+          "lat": 31.2001,
+          "lon": 29.9187
+        },
+        {
+          "id": "ce-suez",
+          "name": "Suez Pipeline Station",
+          "type": "Pipeline station",
+          "city": "Suez",
+          "country": "eg",
+          "lat": 29.9668,
+          "lon": 32.5498
+        }
+      ]
+    }
+  ]
+}
