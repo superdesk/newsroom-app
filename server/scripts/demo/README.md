@@ -1,13 +1,27 @@
 # Briefdesk portal seed
 
 Puts a freshly deployed Briefdesk Portal into the demo state: companies, tier packages,
-users, navigations, Watches, the home page dashboard and a monitoring profile. Re-runnable:
-everything is looked up by name or email first, then created or updated.
+users, navigations, Watches, a personal home page per user and a monitoring profile.
+Re-runnable: everything is looked up by name or email first, then created or updated.
 
 Files:
 
 - `seed_portal.py` The script. Python 3 standard library only.
 - `briefdesk_portal.json` All the data. Edit this, not the script.
+
+## The home page is per user, not global
+
+Global home page cards backed by a product are not filtered by the viewing user's company
+entitlement. `newsroom/wire/items.py::get_items_for_dashboard` fetches each card through
+`WireSearchServiceAsync.get_product_items_for_dashboard`, which replaces the search filters
+with the card's own product ("so we can get items for the supplied product even if the
+current user/company doesn't have permission for them"). A client would see teasers for
+regions and sectors it does not pay for, which is the opposite of what this demo is meant
+to show. So the seed creates no home page cards and no products to back them. Instead every
+user gets a personal dashboard (the "Personalize Home" feature) built from Watches of their
+own: `newsroom/wire/views.py::get_personal_dashboards_data` fetches those items with the
+ordinary wire search for that user and company, so the company's products filter the
+result exactly as they do in the Intelligence Feed.
 
 ## On Fireq (automatic)
 
@@ -16,7 +30,7 @@ Nobody has a shell on a Fireq instance, so the branch seeds itself. `server/Proc
 
 1. does nothing unless `DB_NAME` is set (Fireq exports it, the Docker setups here do not);
    `BRIEFDESK_SEED=1` forces it and `BRIEFDESK_SEED=0` disables it,
-2. skips when the marker document `briefdesk_seed/v1` exists in MongoDB,
+2. skips when the marker document `briefdesk_seed/<SEED_VERSION>` exists in MongoDB,
 3. waits for the admin user `admin@example.com` to exist, because Fireq starts the app before it
    runs `initialize_data` and `create_user`, then waits another 45 seconds for the rest of the
    initialisation,
@@ -80,15 +94,22 @@ python3 server/scripts/demo/seed_portal.py
 --subject-filter-field name|code
 ```
 
-Sections, in dependency order: `navigations`, `products`, `companies`, `users`, `topics`,
-`cards`, `ui_config`, `monitoring`. `--only` is reordered into that order for you.
+Sections, in dependency order: `cleanup`, `navigations`, `products`, `companies`, `users`,
+`topics`, `dashboards`, `cards`, `ui_config`, `monitoring`. `--only` is reordered into that
+order for you.
+
+`cleanup` deletes the documents listed in the `cleanup` block of the data file, which is how
+a database seeded by an earlier version of this script loses the global home page cards and
+the four `Dashboard: ...` products that backed them. Deleting a product is safe even when a
+company still holds it: `ProductsService.on_deleted` strips the reference from every company
+and user.
 
 Environment: `PORTAL_URL`, `PORTAL_ADMIN_EMAIL` (default `admin@example.com`),
 `PORTAL_ADMIN_PASSWORD`, `PORTAL_USER_PASSWORD` (default `Briefdesk-demo-1`).
 
 ## Which transport
 
-`local` is the one that produces the demo. The HTTP admin API has three gaps that no
+`local` is the one that produces the demo. The HTTP admin API has four gaps that no
 amount of scripting gets around:
 
 - **Passwords.** Nothing in the web API sets one. `POST /users/new` and
@@ -98,12 +119,15 @@ amount of scripting gets around:
 - **Watches for other people.** `POST /users/<id>/topics` is guarded by
   `url_arg_must_be_current_user`, with no administrator bypass. Only the owner can create
   their own Watch.
+- **Personal home dashboards.** The user edit endpoint posts to
+  `newsroom.users.forms.UserForm` too, and that form has no `dashboards` field, so the
+  `dashboards` section cannot be written over HTTP either.
 - **`ui_config` and monitoring profiles.** `ui_config` has no endpoint at all. The
   monitoring create endpoint reads a WTForms body and a JSON body from the same request,
   which a normal client cannot send.
 
-The HTTP transport still does companies, products, navigations, users (without passwords)
-and home page cards, and it prints exactly what it skipped. Use it when you only have the
+The HTTP transport still does the cleanup, companies, products, navigations and users
+(without passwords), and it prints exactly what it skipped. Use it when you only have the
 URL, then finish with `--transport local`.
 
 The management API (`newsroom/mgmt_api/`) would have solved the topics problem, but it is
@@ -189,23 +213,30 @@ There is no undo. To start over:
 - Otherwise delete the demo documents by hand in the admin UI (Companies, Products,
   Global Topics, Dashboards) and re-run. Deleting a company deletes its users.
 - To fix one part only, edit `briefdesk_portal.json` and re-run with `--only`. Renaming a
-  company, product, navigation, card or user email in the data file creates a second
-  document rather than renaming the first, because the name is the lookup key.
+  company, product, navigation, Watch or user email in the data file creates a second
+  document rather than renaming the first, because the name is the lookup key. Add the old
+  name to the `cleanup` block to have the leftover deleted on the next run.
 
 ## Known limitations
 
-- The HTTP transport cannot set passwords, create Watches, write `ui_config` or create
-  monitoring profiles. See "Which transport".
+- The HTTP transport cannot set passwords, create Watches, write personal dashboards or
+  `ui_config`, or create monitoring profiles. See "Which transport".
 - `ui_config` is only applied if `server/theme/briefdesk_ui_config.wire.json` exists. That
   file belongs to the theme work package and holds one document per section (`wire`,
   `home`, `agenda`), the same shape as `newsroom/init_data/ui_config.json`. The
   alternative route is `server/data/ui_config.json` plus
   `python manage.py initialize_data -n ui_config -f`.
-- Home page cards are global, not per company. Users see teasers for items outside their
-  entitlement unless `PERMISSION_DASHBOARD_CARDS` is on in `server/settings.py`, which makes
-  the home page mark each card item with `user_has_access`.
-- The four `Dashboard: ...` products exist only to feed home page cards. They are
-  deliberately not assigned to any company.
+- The home page of a user without a personal dashboard is empty, because the seed creates no
+  global cards. That is the portal administrator `admin@example.com`, who is not in the data
+  file and works from `/wire` and the admin screens.
+- The personal dashboard cards are rendered as `PERSONAL_DASHBOARD_CARD_TYPE`, a single
+  setting for the whole instance, default `4-picture-text`. The `type` stored on each
+  dashboard is what the Personalize Home modal writes and is not read back.
+- A personal dashboard shows at most 6 Watches, and the Personalize Home modal replaces the
+  whole dashboard when a user edits it.
+- If global cards are ever wanted back, `PERMISSION_DASHBOARD_CARDS` in `server/settings.py`
+  makes the home page mark each card item with `user_has_access` and blank its body, but the
+  headlines of items outside the entitlement are still listed.
 - The monitoring profile is written whether or not the monitoring section is enabled and
   whether or not Celery beat is running. Nothing will actually be emailed unless the
   `beat` and `worker` processes are up.

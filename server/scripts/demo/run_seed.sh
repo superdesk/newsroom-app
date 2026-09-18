@@ -9,7 +9,7 @@
 set -u
 
 # Bump to seed again on a database that was already seeded.
-SEED_VERSION="v1"
+SEED_VERSION="v2"
 
 ADMIN_EMAIL="${PORTAL_ADMIN_EMAIL:-admin@example.com}"
 

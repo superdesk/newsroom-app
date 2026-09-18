@@ -5,16 +5,17 @@ Two transports, one data file (``briefdesk_portal.json``):
 
 ``local``
     Run on the instance itself. Creates the newsroom app and writes through its own
-    services. This is the only transport that can set user passwords and create
-    Watches (topics) owned by somebody other than the caller, so it is the one that
-    produces the complete demo state.
+    services. This is the only transport that can set user passwords, create Watches
+    (topics) owned by somebody other than the caller and write personal home
+    dashboards, so it is the one that produces the complete demo state.
 
 ``http``
     Run from anywhere against ``PORTAL_URL``. Logs in as the portal administrator and
     uses the same JSON and form endpoints the React admin UI uses. It cannot set
     passwords (no endpoint sets one), cannot create a Watch for another user (the
     topic endpoints are guarded by ``url_arg_must_be_current_user``), and cannot write
-    ``ui_config`` or monitoring profiles. Those sections report themselves as skipped.
+    personal dashboards, ``ui_config`` or monitoring profiles. Those sections report
+    themselves as skipped.
 
 Both transports are idempotent: everything is looked up by name or email first, then
 created or updated. ``--dry-run`` touches nothing and needs no instance at all.
@@ -39,11 +40,13 @@ DEFAULT_DATA_FILE = HERE / "briefdesk_portal.json"
 DEFAULT_USER_PASSWORD = "Briefdesk-demo-1"
 
 SECTIONS = [
+    "cleanup",
     "navigations",
     "products",
     "companies",
     "users",
     "topics",
+    "dashboards",
     "cards",
     "ui_config",
     "monitoring",
@@ -117,6 +120,7 @@ class Backend:
     can_write_ui_config = False
     can_write_monitoring = False
     can_write_other_users_topics = False
+    can_write_user_dashboards = False
     # fields this transport silently drops, so the seeder does not report them as
     # changed on every run
     unwritable_fields: Dict[str, set] = {}
@@ -134,6 +138,9 @@ class Backend:
         raise NotImplementedError
 
     async def update(self, resource: str, item_id: str, doc: dict) -> None:
+        raise NotImplementedError
+
+    async def delete(self, resource: str, item_id: str) -> None:
         raise NotImplementedError
 
     async def set_password(self, user_id: str, password: str) -> None:
@@ -155,12 +162,16 @@ class DryRunBackend(Backend):
         self.can_write_ui_config = template.can_write_ui_config
         self.can_write_monitoring = template.can_write_monitoring
         self.can_write_other_users_topics = template.can_write_other_users_topics
+        self.can_write_user_dashboards = template.can_write_user_dashboards
         self.unwritable_fields = template.unwritable_fields
 
     async def find(self, resource: str, field: str, value: str) -> Optional[dict]:
         return None
 
     async def find_topic(self, owner_id: str, label: str) -> Optional[dict]:
+        return None
+
+    async def delete(self, resource: str, item_id: str) -> None:
         return None
 
 
@@ -178,6 +189,7 @@ class HttpBackend(Backend):
     can_write_ui_config = False
     can_write_monitoring = False
     can_write_other_users_topics = False
+    can_write_user_dashboards = False
     # newsroom.navigations.views.prepare_navigation_data never reads `order`
     unwritable_fields = {"navigations": {"order"}}
 
@@ -298,6 +310,12 @@ class HttpBackend(Backend):
         else:
             raise SeedError(f"{resource} cannot be updated over HTTP")
 
+    async def delete(self, resource: str, item_id: str) -> None:
+        if resource not in ("cards", "products"):
+            raise SeedError(f"{resource} cannot be deleted over HTTP")
+        # both endpoints take an optional If-Match, so a plain DELETE is accepted
+        self._request("DELETE", f"/{resource}/{item_id}")
+
 
 def user_form_fields(doc: dict) -> Dict[str, str]:
     """Render a user document as the fields ``newsroom.users.forms.UserForm`` reads.
@@ -340,6 +358,7 @@ class LocalBackend(Backend):
     can_write_ui_config = True
     can_write_monitoring = True
     can_write_other_users_topics = True
+    can_write_user_dashboards = True
 
     def __init__(self, log: Log):
         self.log = log
@@ -391,6 +410,13 @@ class LocalBackend(Backend):
                 for ref in out["products"]
                 if isinstance(ref, dict)
             ]
+        if isinstance(out.get("dashboards"), list):
+            out["dashboards"] = [
+                dict(entry, topic_ids=[ObjectId(topic_id) for topic_id in entry["topic_ids"]])
+                if isinstance(entry, dict) and entry.get("topic_ids")
+                else entry
+                for entry in out["dashboards"]
+            ]
         if isinstance(out.get("subscribers"), list):
             out["subscribers"] = [
                 dict(sub, user_id=ObjectId(sub["user_id"])) if isinstance(sub.get("user_id"), str) else sub
@@ -416,6 +442,12 @@ class LocalBackend(Backend):
     async def update(self, resource: str, item_id: str, doc: dict) -> None:
         # the service converts the id to an ObjectId itself when the resource uses one
         await self._service(resource).update(item_id, self._coerce(doc))
+
+    async def delete(self, resource: str, item_id: str) -> None:
+        service = self._service(resource)
+        item = await service.find_by_id(item_id)
+        if item is not None:
+            await service.delete(item)
 
     async def set_password(self, user_id: str, password: str) -> None:
         await self.update("users", user_id, {"password": password})
@@ -505,6 +537,27 @@ class Seeder:
         return values
 
     # -- sections
+
+    async def cleanup(self) -> None:
+        """Delete documents an earlier version of this seed created and no longer wants.
+
+        Products and their home page cards are looked up by name, so a renamed or dropped
+        entry in the data file leaves the old document behind. Deleting a product is safe
+        even when it is still in use: ``ProductsService.on_deleted`` strips the reference
+        from every company and user.
+        """
+
+        self.log.section("Cleanup")
+        removals = self.data.get("cleanup") or {}
+        for resource, key_field in (("cards", "label"), ("products", "name")):
+            for name in removals.get(resource, []):
+                existing = await self.backend.find(resource, key_field, name)
+                if existing is None:
+                    self.log.info(f"no {resource} {name!r} to delete")
+                    continue
+                self.log.action("delete", resource, name)
+                if not self.log.dry_run:
+                    await self.backend.delete(resource, str(existing["_id"]))
 
     async def navigations(self) -> None:
         self.log.section("Navigations")
@@ -606,6 +659,56 @@ class Seeder:
                 await self.backend.set_password(user_id, password)
                 self.log.info(f"     password set for {user['email']}")
 
+    def _company_of(self, email: str) -> str:
+        for user in self.data["users"]:
+            if user["email"] == email:
+                return user["company"]
+        raise SeedError(f"{email} is not in the users section of the data file")
+
+    async def _upsert_topic(self, topic: dict) -> str:
+        """Create or update one Watch, owned by ``topic["owner"]``. Returns its id."""
+
+        owner_id = await self._require("users", "email", topic["owner"])
+        company_id = await self._require("companies", "name", self._company_of(topic["owner"]))
+        wanted = {
+            "label": topic["label"],
+            "topic_type": topic.get("topic_type", "wire"),
+            "query": topic.get("query"),
+            "filter": {
+                scheme: self._filter_values(scheme, codes)
+                for scheme, codes in (topic.get("filter") or {}).items()
+            },
+            "user": owner_id,
+            "company": company_id,
+            "is_global": topic.get("is_global", False),
+            "subscribers": [
+                {
+                    "user_id": await self._require("users", "email", subscriber["user"]),
+                    "notification_type": subscriber["notification_type"],
+                }
+                for subscriber in topic.get("subscribers", [])
+            ],
+        }
+        existing = await self.backend.find_topic(owner_id, topic["label"])
+        if existing is None:
+            self.log.action("create", "topic", topic["label"])
+            if self.log.dry_run:
+                return f"<topic:{topic['owner']}:{topic['label']}>"
+            return await self.backend.create(
+                "topics", dict(wanted, original_creator=owner_id, version_creator=owner_id)
+            )
+
+        topic_id = str(existing["_id"])
+        changed = changed_fields(existing, wanted)
+        if not changed:
+            self.log.unchanged("topic", topic["label"])
+            return topic_id
+        self.log.action("update", "topic", topic["label"])
+        self.log.info(f"     fields: {', '.join(changed)}")
+        if not self.log.dry_run:
+            await self.backend.update("topics", topic_id, wanted)
+        return topic_id
+
     async def topics(self) -> None:
         self.log.section("Watches (topics)")
         if not self.backend.can_write_other_users_topics:
@@ -614,52 +717,51 @@ class Seeder:
                 "rerun with --transport local on the instance"
             )
             return
-        companies_by_email = {user["email"]: user["company"] for user in self.data["users"]}
         for topic in self.data["topics"]:
-            if topic["owner"] not in companies_by_email:
-                raise SeedError(
-                    f"Watch {topic['label']!r} is owned by {topic['owner']}, who is not "
-                    "in the users section of the data file"
-                )
-            owner_id = await self._require("users", "email", topic["owner"])
-            company_id = await self._require(
-                "companies", "name", companies_by_email[topic["owner"]]
+            await self._upsert_topic(topic)
+
+    async def dashboards(self) -> None:
+        """Give each user a personal home page built from Watches of their own.
+
+        This is the only entitlement safe home page. The items of a personal dashboard are
+        fetched by ``newsroom.wire.views.get_personal_dashboards_data``, which runs the
+        normal wire search for the viewing user and company, so the company's products
+        filter the result. Product backed home page cards skip that filter.
+        """
+
+        self.log.section("Personal home dashboards")
+        if not self.backend.can_write_user_dashboards:
+            self.log.skip(
+                "every personal home dashboard: newsroom.users.forms.UserForm has no "
+                "dashboards field, rerun with --transport local on the instance"
             )
+            return
+        for dashboard in self.data.get("dashboards", []):
+            owner = dashboard["owner"]
+            topic_ids = [
+                await self._upsert_topic(dict(watch, owner=owner))
+                for watch in dashboard.get("watches", [])
+            ]
+            user_id = await self._require("users", "email", owner)
+            name = dashboard["name"]
             wanted = {
-                "label": topic["label"],
-                "topic_type": topic.get("topic_type", "wire"),
-                "query": topic.get("query"),
-                "filter": {
-                    scheme: self._filter_values(scheme, codes)
-                    for scheme, codes in (topic.get("filter") or {}).items()
-                },
-                "user": owner_id,
-                "company": company_id,
-                "is_global": topic.get("is_global", False),
-                "subscribers": [
+                "dashboards": [
                     {
-                        "user_id": await self._require("users", "email", subscriber["user"]),
-                        "notification_type": subscriber["notification_type"],
+                        "name": name,
+                        # only the config PERSONAL_DASHBOARD_CARD_TYPE decides how the cards
+                        # are rendered, this is what the Personalize Home modal stores
+                        "type": dashboard.get("type", "4-picture-text"),
+                        "topic_ids": topic_ids,
                     }
-                    for subscriber in topic.get("subscribers", [])
-                ],
+                ]
             }
-            existing = await self.backend.find_topic(owner_id, topic["label"])
-            if existing is None:
-                self.log.action("create", "topic", topic["label"])
-                if not self.log.dry_run:
-                    await self.backend.create(
-                        "topics", dict(wanted, original_creator=owner_id, version_creator=owner_id)
-                    )
+            existing = await self.backend.find("users", "email", owner)
+            if existing is not None and not changed_fields(existing, wanted):
+                self.log.unchanged("dashboard", f"{owner}: {name}")
                 continue
-            changed = changed_fields(existing, wanted)
-            if not changed:
-                self.log.unchanged("topic", topic["label"])
-                continue
-            self.log.action("update", "topic", topic["label"])
-            self.log.info(f"     fields: {', '.join(changed)}")
+            self.log.action("set", "dashboard", f"{owner}: {name}")
             if not self.log.dry_run:
-                await self.backend.update("topics", str(existing["_id"]), wanted)
+                await self.backend.update("users", user_id, wanted)
 
     async def cards(self) -> None:
         self.log.section("Home page cards")

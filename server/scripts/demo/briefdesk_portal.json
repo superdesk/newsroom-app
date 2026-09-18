@@ -177,31 +177,6 @@
             "description": "Internal staff access to every released report.",
             "query": "profile:(Alert OR DailyBrief OR CountryAssessment OR RFIResponse)",
             "navigations": ["Alerts", "Daily briefs", "Country assessments", "All reports"]
-        },
-
-        {
-            "name": "Dashboard: Critical and high alerts",
-            "description": "Home page card only, not assigned to any company.",
-            "query": "profile:Alert AND subject.code:(critical OR high)",
-            "navigations": []
-        },
-        {
-            "name": "Dashboard: Europe",
-            "description": "Home page card only, not assigned to any company.",
-            "query": "subject.code:europe",
-            "navigations": []
-        },
-        {
-            "name": "Dashboard: Middle East and North Africa",
-            "description": "Home page card only, not assigned to any company.",
-            "query": "subject.code:mena",
-            "navigations": []
-        },
-        {
-            "name": "Dashboard: Daily briefs",
-            "description": "Home page card only, not assigned to any company.",
-            "query": "profile:DailyBrief",
-            "navigations": []
         }
     ],
 
@@ -356,36 +331,78 @@
         }
     ],
 
-    "cards": [
+    "dashboards": [
         {
-            "label": "Critical and high alerts",
-            "type": "2x2-top-news",
-            "dashboard": "newsroom",
-            "order": 1,
-            "config": {"product": "Dashboard: Critical and high alerts"}
+            "owner": "erik.dahl@nordfreight.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {"label": "Critical and high alerts", "filter": {"severity": ["critical", "high"]}},
+                {"label": "Latest alerts", "query": "profile:Alert"},
+                {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"},
+                {"label": "Poland", "filter": {"country": ["pl"]}}
+            ]
         },
         {
-            "label": "Europe",
-            "type": "wire-list",
-            "dashboard": "newsroom",
-            "order": 2,
-            "config": {"product": "Dashboard: Europe", "size": 6}
+            "owner": "ines.morel@nordfreight.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {"label": "Critical and high alerts", "filter": {"severity": ["critical", "high"]}},
+                {"label": "Latest alerts", "query": "profile:Alert"},
+                {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"},
+                {"label": "Poland", "filter": {"country": ["pl"]}}
+            ]
         },
         {
-            "label": "Middle East and North Africa",
-            "type": "wire-list",
-            "dashboard": "newsroom",
-            "order": 3,
-            "config": {"product": "Dashboard: Middle East and North Africa", "size": 6}
+            "owner": "hanna.weiss@aureliapharma.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {"label": "Critical and high alerts", "filter": {"severity": ["critical", "high"]}},
+                {"label": "Latest alerts", "query": "profile:Alert"},
+                {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"}
+            ]
         },
         {
-            "label": "Latest daily briefs",
-            "type": "3-text-only",
-            "dashboard": "newsroom",
-            "order": 4,
-            "config": {"product": "Dashboard: Daily briefs"}
+            "owner": "karim.saleh@castellan.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {"label": "Critical and high alerts", "filter": {"severity": ["critical", "high"]}},
+                {"label": "Latest alerts", "query": "profile:Alert"},
+                {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"}
+            ]
+        },
+        {
+            "owner": "lucia.ferro@halden.example",
+            "name": "Operations overview",
+            "type": "4-picture-text",
+            "watches": [
+                {"label": "Critical and high alerts", "filter": {"severity": ["critical", "high"]}},
+                {"label": "Latest alerts", "query": "profile:Alert"},
+                {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"},
+                {"label": "Requests for information", "query": "profile:RFIResponse"}
+            ]
         }
     ],
+
+    "cards": [],
+
+    "cleanup": {
+        "cards": [
+            "Critical and high alerts",
+            "Europe",
+            "Middle East and North Africa",
+            "Latest daily briefs"
+        ],
+        "products": [
+            "Dashboard: Critical and high alerts",
+            "Dashboard: Europe",
+            "Dashboard: Middle East and North Africa",
+            "Dashboard: Daily briefs"
+        ]
+    },
 
     "monitoring": [
         {

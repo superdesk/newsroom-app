@@ -231,3 +231,7 @@ CLIENT_CONFIG.update(
         },
     }
 )
+
+# Personal home dashboards default to a card type built around pictures. Briefdesk reports carry
+# no images, so the text-only card is used.
+PERSONAL_DASHBOARD_CARD_TYPE = "4-text-only"
