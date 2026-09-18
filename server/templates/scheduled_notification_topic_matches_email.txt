@@ -1,0 +1,42 @@
+{# Shadows newsroom/templates/scheduled_notification_topic_matches_email.txt. Wording only. #}
+{% extends "email_layout.txt" %}
+{% block name %}{% endblock %}
+{% block content %}
+{{ date | notification_datetime }}
+
+Your watch\tCount
+{% for section, matches in topic_match_table.items() %}
+{% for name, count in matches %}
+New {{ config.AGENDA_SECTION if section == "agenda" else config.WIRE_SECTION }} entries for "{{ name }}"\t{{ count }}
+{% endfor %}
+{% endfor %}
+
+{% for section, topic_entries in entries.items() %}
+{% for entry in topic_entries %}
+
+Latest entries for {{ entry.topic.label }}
+{% if section == "wire" %}
+{{ entry.item.headline }}
+
+Reference: {{ entry.item.slugline }} | Source: {{ entry.item.source }}
+Released: {{ entry.item.versioncreated | notification_datetime }}
+{{ short_highlighted_text(get_highlighted_field(entry.item, ["body_html"]), output_html=False) }}
+Open this report: {{ url_for_wire(entry.item, True, section) }}
+Open all matches: {{ url_for('wire.wire', _external=True) }}?topic={{ entry.topic._id }}
+
+{% elif section == "agenda" %}
+
+{{ entry.item.headline or entry.item.name }}
+Date and time: {{ entry.item | agenda_dates_string }}{% if entry.item.location %} | Location: {{ entry.item | location_string }}{% endif %}
+Released: {{ entry.item.versioncreated | notification_datetime }}
+
+{{ short_highlighted_text(get_highlighted_field(entry.item, ["definition_long", "description_text", "definition_short"]), output_html=False) }}
+
+Open this entry: {{ url_for_wire(entry.item, True, section) }}
+Open all matches: {{ url_for('agenda.index', _external=True) }}?topic={{ entry.topic._id }}
+
+{% endif %}
+
+{% endfor %}
+{% endfor %}
+{% endblock %}

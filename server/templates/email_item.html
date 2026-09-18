@@ -1,0 +1,14 @@
+{# Shadows newsroom/templates/email_item.html. The field labels there are literal strings, not gettext calls, so the instance catalogue cannot reach them. #}
+<h1>{{ item.headline }}</h1>
+
+{% if item.abstract %}<p><strong>{{ item.abstract | safe }}</strong></p>{% endif %}
+
+{% if item.body_html %}{{ get_highlighted_field(item, ["body_html"]) | safe }}{% elif item.body_text %}<pre>{{ item.body_text }}</pre>{% endif %}
+
+<dl>
+{% if item.slugline %}<dt>Reference:</dt><dd>{{ get_highlighted_field(item, ["slugline"]) | safe }}</dd>{% endif %}
+{% for subject in item.subject or [] %}{% if subject.scheme in config.WIRE_SUBJECT_SCHEME_WHITELIST %}<dt>{{ subject.scheme | replace('_', ' ') | title }}:</dt><dd>{{ subject.name }}</dd>{% endif %}{% endfor %}
+{% if item.byline %}<dt>Analyst:</dt><dd>{{ item.byline }}</dd>{% endif %}
+<dt>Released:</dt><dd>{{ item.versioncreated | datetime_long }}</dd>
+<dt>Link:</dt><dd><a href="{{ url_for_wire(item, True, section) }}">{{ url_for_wire(item, True, section) }}</a></dd>
+</dl>

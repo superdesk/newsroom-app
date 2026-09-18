@@ -1,0 +1,10 @@
+{# Shadows newsroom/templates/email_layout.txt. The plain text footer is inline in core, so the whole layout has to be shadowed to change it. #}
+{% block name %}{% if name %}{{ name }},{% endif %}{% endblock %}
+{% block content %}{% endblock %}
+
+{% block footer %}
+Regards,
+The {{ config.SITE_NAME }} team
+
+{{ config.COPYRIGHT_HOLDER }}. Released to entitled clients only, do not redistribute.
+{% endblock %}

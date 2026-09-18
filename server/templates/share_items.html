@@ -1,0 +1,15 @@
+{# Shadows newsroom/templates/share_items.html. Wording only. #}
+{% extends "email_layout.html" %}
+{% block name %}{% endblock %}
+{% block content %}
+<p>Hi {{ recipient.first_name }} {{ recipient.last_name }},<br />
+{{ sender.first_name }} {{ sender.last_name }} ({{ sender.email }}) shared the following {{ item_name or 'reports' }} with you.</p>
+{% include "message.html" %}
+{% for item in items %}
+
+    {% include "email_item.html" %}
+
+<hr />
+{% endfor %}
+
+{% endblock %}

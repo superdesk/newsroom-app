@@ -1,0 +1,30 @@
+{# Shadows newsroom/templates/page-copyright.html. The core text is written for a news agency redistributing wire copy. #}
+{% extends "layout.html" %}
+
+{% block title %}{{ gettext('Copyright') }}{% endblock %}
+
+
+{% block content %}
+    <div class="content">
+        <div class="container py-5">
+
+            <h1 class="mb-5">Copyright and handling</h1>
+
+            <p>The reports and assessments delivered through {{ config.SITE_NAME }} are the property of
+                {{ config.COPYRIGHT_HOLDER }}.</p>
+
+            <p>They are released to your organisation under the terms of your service agreement, for the internal
+                use of your organisation only. Onward distribution outside your organisation, republication, or
+                resale in any medium requires written permission from {{ config.COPYRIGHT_HOLDER }}.</p>
+
+            <p>Reports carry a TLP marking. Handle each report according to its marking, whatever your general
+                agreement allows. TLP:RED is for named recipients only, TLP:AMBER may be shared inside your
+                organisation on a need to know basis, TLP:GREEN may be shared with peers and partners, and
+                TLP:CLEAR may be shared without restriction.</p>
+
+            <p>Assessments are judgements made from the information available at the time of writing. They are not
+                a guarantee of what will happen, and they do not replace your own duty of care decisions.</p>
+
+        </div>
+    </div>
+{% endblock %}

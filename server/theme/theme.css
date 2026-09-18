@@ -1,0 +1,187 @@
+/*
+ * Briefdesk Portal theme.
+ *
+ * Loaded by ``base_layout.html`` and ``layout_without_bars.html`` as ``theme_url('theme.css')``,
+ * after the compiled newsroom stylesheet, so it only has to restate the custom properties defined
+ * in newsroom-core ``assets/styles/custom-variables.scss``.
+ *
+ * Colours that carry meaning inside the product (severity) are kept out of the brand palette on
+ * purpose: brand is navy and green only.
+ *
+ * The SCSS helpers ``alpha()`` and ``lightness()`` compile to ``hsl(var(--x-h), var(--x-s),
+ * var(--x-l))``, so any colour token that those helpers touch has to be redefined as the four
+ * values, not just the one.
+ */
+
+:root {
+    /* BRAND */
+    --brand-navy: #10243E;
+    --brand-navy-700: #1B3A63;
+    --brand-navy-900: #0A1729;
+    --brand-green: #1FB57A;
+    /* Darker green for anything that carries white text. White on --brand-green is 2.6:1 and
+       fails WCAG AA; this one is 5.2:1. */
+    --brand-green-action: #0E7C50;
+
+    /* SEVERITY (content meaning, never brand) */
+    --severity-critical: #B42318;
+    --severity-high: #D9480F;
+    --severity-medium: #E8A317;
+    --severity-low: #2E7D5B;
+    --severity-info: #5B7083;
+
+    /* CORE: THEME COLOUR
+       Drives the sidenav background, home section headings, primary icon buttons and navbar links. */
+    --color-primary: var(--brand-navy);
+    --color-primary-h: 214;
+    --color-primary-s: 59%;
+    --color-primary-l: 15%;
+
+    --main-blue: var(--brand-navy);
+
+    /* CORE: INTERACTIVE FOCUS
+       Also the colour of text links, so it has to clear 4.5:1 on white. */
+    --color-interactive-focus-base: 156, 80%;
+    --color-interactive-focus-l: 27%;
+
+    --color-text--slugline: var(--brand-navy-700);
+    --color-home-section-heading: var(--brand-navy);
+
+    /* CORE: TYPOGRAPHY
+       The core secondary family is Merriweather, which reads as a newspaper. Headlines here are a
+       report title, so both families are the sans. */
+    --font-family-core--secondary: var(--font-family-core--sans);
+
+    /* COMPONENT: NAVBAR MAIN */
+    --top-bar-color-bg: var(--brand-navy);
+    --top-bar-color-fg: hsl(0, 0%, 100%);
+    --top-bar-color-bg-notifications: hsla(214, 59%, 4%, 0.4);
+    --top-bar-color-bg-notifications--hover: hsla(214, 59%, 2%, 0.7);
+    --top-bar-color-bg-avatar-block: hsla(214, 59%, 4%, 0.4);
+    --top-bar-color-bg-avatar: var(--brand-navy-700);
+    --top-bar-color-bg-avatar--hover: #24507F;
+    /* Navy on brand green is 5.9:1. */
+    --top-bar-color-bg-badge: var(--brand-green);
+    --top-bar-color-fg-badge: var(--brand-navy);
+    --top-bar-logo-main-max-width: 200px;
+    --top-bar-nav-brand-border-color: hsla(0, 0%, 100%, 0.35);
+    --top-bar-nav-brand-border-type: solid;
+    --color-text-link--navbar: hsl(0, 0%, 100%);
+
+    /* COMPONENT: SIDENAV
+       Navy bar, white icons (15.6:1), active item is white with navy icon. */
+    --sidenav-color-bg: var(--brand-navy);
+    --sidenav-color-item-bg--hover: hsla(0, 0%, 100%, 0.14);
+    --sidenav-color-badge-bg: var(--brand-green);
+    --sidenav-color-badge-bg--active: var(--brand-green);
+    --sidenav-color-badge-fg: var(--brand-navy);
+    --sidenav-color-badge-fg--active: var(--brand-navy);
+
+    /* COMPONENT: BUTTONS
+       Primary actions are green. White on --brand-green-action is 5.2:1. */
+    --button-color-bg--primary-base: 156, 80%;
+    --button-color-bg--primary-l: 27%;
+    --button-color-fg--primary: hsla(0, 0%, 100%, 1);
+
+    /* COMPONENT: LOGIN PAGE
+       The login box itself stays white; the page behind it is navy. */
+    --login-page-color-bg: var(--brand-navy);
+    --login-logo-image-width--max: 260px;
+
+    /* COMPONENT: CONTENT AREA
+       Neutral, so the severity colours in the content are the only strong colour on the page. */
+    --color-background--muted: hsl(210, 14%, 97%);
+    --color-background--muted-2: hsl(210, 14%, 94%);
+    --main-header-color-bg: hsl(0, 0%, 100%);
+    --card-item-image-color-bg: var(--brand-navy-700);
+    --multi-action-bar-color-bg: hsl(156, 44%, 92%);
+
+    /* COMPONENT: MAIN FOOTER */
+    --footer-color-bg: hsl(210, 14%, 92%);
+    --footer-size--height: 36px;
+
+    /* COMPONENT: ALERTIFY NOTIFIER */
+    --ajs-message-color-bg--success: var(--brand-green-action);
+}
+
+/*
+ * Login logo.
+ *
+ * The white logo sits on a navy plaque inside the white login card, which keeps the wordmark on the
+ * background it was drawn for.
+ */
+.login-logo {
+    background-color: var(--brand-navy);
+    border-radius: var(--border-radius--l);
+    margin-block-end: var(--space--2);
+}
+
+/*
+ * Severity tags in the item preview.
+ *
+ * ``PreviewTagsSubjects`` groups subjects by scheme and renders each value as
+ * ``<a class="wire-column__preview__tag" href="...?filter=<urlencoded {"severity":["Critical"]}>">``.
+ * The encoded filter in the href is the only hook on the existing markup that identifies both the
+ * scheme and the value, so the selectors below match on it. There is no class or data attribute to
+ * use instead; adding one would be a newsroom-core client change.
+ *
+ * The colour is a bar on the inline start edge plus a tint, never the text or tag background behind
+ * the text, so the label keeps its near-black text on a near-white tint. The bar is redundant with
+ * the tag text, which always spells the severity out, so it does not have to carry 3:1 on its own.
+ */
+.wire-column__preview__tag[href*="%22severity%22"] {
+    font-weight: 600;
+    padding-inline-start: var(--space--1-5);
+    border-inline-start: 4px solid var(--severity-info);
+}
+
+.wire-column__preview__tag[href*="%22severity%22%3A%5B%22Critical%22%5D"] {
+    border-inline-start-color: var(--severity-critical);
+    background-color: #F5E0DF;
+}
+
+.wire-column__preview__tag[href*="%22severity%22%3A%5B%22High%22%5D"] {
+    border-inline-start-color: var(--severity-high);
+    background-color: #FAE5DD;
+}
+
+.wire-column__preview__tag[href*="%22severity%22%3A%5B%22Medium%22%5D"] {
+    border-inline-start-color: var(--severity-medium);
+    background-color: #FCF2DF;
+}
+
+.wire-column__preview__tag[href*="%22severity%22%3A%5B%22Low%22%5D"] {
+    border-inline-start-color: var(--severity-low);
+    background-color: #E2EDE8;
+}
+
+.wire-column__preview__tag[href*="%22severity%22%3A%5B%22Informational%22%5D"] {
+    border-inline-start-color: var(--severity-info);
+    background-color: #E8EBEE;
+}
+
+/*
+ * TLP markings. The four values are a fixed, published scale, so they are drawn as the scale.
+ */
+.wire-column__preview__tag[href*="%22tlp%22"] {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    border-inline-start: 4px solid var(--brand-navy-700);
+    padding-inline-start: var(--space--1-5);
+}
+
+.wire-column__preview__tag[href*="%22tlp%22%3A%5B%22TLP%3ARED%22%5D"] {
+    border-inline-start-color: var(--severity-critical);
+}
+
+.wire-column__preview__tag[href*="%22tlp%22%3A%5B%22TLP%3AAMBER%22%5D"] {
+    border-inline-start-color: var(--severity-medium);
+}
+
+.wire-column__preview__tag[href*="%22tlp%22%3A%5B%22TLP%3AGREEN%22%5D"] {
+    border-inline-start-color: var(--severity-low);
+}
+
+.wire-column__preview__tag[href*="%22tlp%22%3A%5B%22TLP%3ACLEAR%22%5D"] {
+    border-inline-start-color: var(--severity-info);
+}

@@ -1,0 +1,83 @@
+{#
+    Shadows newsroom/templates/search_tips_regular.html, which is written for a wire agency and
+    names The Canadian Press throughout. The field names and filter groups below are the ones this
+    instance actually has.
+#}
+<div class="tips-content">
+    <div>
+        <p><b>Be specific.</b> The more relevant words you use, the better the results.</p>
+        <p>
+            Broad = <code>port strike</code><br/>
+            Specific = <code>Gdansk port strike container terminal</code>
+        </p>
+    </div>
+    <hr />
+    <div>
+        <p><b>Use quotes</b> to search for a phrase.</p>
+        <p>
+            Loose = <code>road closure</code><br/>
+            Exact phrase = <code>"road closure"</code>
+        </p>
+    </div>
+    <hr />
+    <div>
+        <p><b>Restricting a search to one field</b></p>
+        <p>By default every field of a report is searched. Prefix a term with a field name to search only that field.</p>
+        <ul>
+            <li>Where the assessment contains the exact phrase "secondary road"<br /><code>body_html:"secondary road"</code></li>
+            <li>Where the title contains strike or blockade<br /><code>headline:(strike OR blockade)</code></li>
+            <li>Where the reference contains a case code<br /><code>slugline:EU-LOG-114</code></li>
+        </ul>
+    </div>
+    <hr />
+    <div>
+        <p><b>Searching by taxonomy</b></p>
+        <p>Severity, threat type, region, country, sector and TLP marking are stored as coded values. Search them by
+            code, which is stable and does not change when a label is reworded.</p>
+        <ul>
+            <li>Everything tagged Europe<br /><code>subject.code:europe</code></li>
+            <li>Critical severity in the logistics sector<br /><code>subject.code:critical AND subject.code:logistics</code></li>
+            <li>Poland or Czechia<br /><code>subject.code:pl OR subject.code:cz</code></li>
+        </ul>
+        <p>You can search by label instead, but a label with a space has to be quoted:
+            <code>subject.name:"Civil unrest"</code>.</p>
+        <p>For anything more than a quick lookup, use the filter panel on the left. Its filters are exact and they
+            can be saved as a watch.</p>
+    </div>
+    <hr />
+    <div>
+        <p><b>Wildcards</b></p>
+        <p>Use <code>?</code> for a single character and <code>*</code> for zero or more: <code>block* Gda?sk</code></p>
+    </div>
+    <hr />
+    <div>
+        <p><b>Proximity</b></p>
+        <p>Use <code>~</code> to find terms within n words of each other.
+            <code>"port closure"~10</code> finds port and closure within ten words of each other, in either order.</p>
+    </div>
+    <hr />
+    <div>
+        <p><b>Using <code>+</code> and <code>-</code> for what must and must not appear</b></p>
+        <p><code>strike blockade +warsaw -rail</code></p>
+        <ul>
+            <li>warsaw must be present</li>
+            <li>rail must not be present</li>
+            <li>strike and blockade are optional</li>
+        </ul>
+    </div>
+    <hr />
+    <div>
+        <p><b>Filters in the {{ config.WIRE_SECTION }}</b></p>
+        <ul>
+            <li>Severity</li>
+            <li>Threat type</li>
+            <li>Region</li>
+            <li>Country</li>
+            <li>Sector</li>
+            <li>TLP marking</li>
+            <li>Released date, a single date or a range</li>
+        </ul>
+        <p>Save any combination of filters and search terms as a watch to get an alert when a new report matches it,
+            immediately or as a daily digest.</p>
+    </div>
+</div>

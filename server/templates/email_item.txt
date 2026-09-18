@@ -1,0 +1,12 @@
+{# Shadows newsroom/templates/email_item.txt. #}
+{{ item.headline }}
+
+{% if item.abstract %}{{ item.abstract | plain_text }}
+
+{% endif %}{% if item.body_text %}{{ item.body_text }}{% elif item.body_html %}{{ item.body_html | plain_text }}{% endif %}
+
+{% if item.slugline %}Reference: {{ item.slugline }}{% endif %}
+{% for subject in item.subject or [] %}{% if subject.scheme in config.WIRE_SUBJECT_SCHEME_WHITELIST %}{{ subject.scheme | replace('_', ' ') | title }}: {{ subject.name }}
+{% endif %}{% endfor %}{% if item.byline %}Analyst: {{ item.byline }}{% endif %}
+Released: {{ item.versioncreated | datetime_long }}
+Link: {{ url_for_wire(item, True, section) }}

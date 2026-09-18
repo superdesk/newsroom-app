@@ -1,0 +1,60 @@
+{# Shadows newsroom/templates/scheduled_notification_topic_matches_email.html. Wording only: topics are Watches, items are reports, slugline is the Reference, and the word count and category lines are dropped. #}
+{% extends "email_layout.html" %}
+{% block htmlhead %}
+<style>
+{% include "email_stylesheet.css" %}
+</style>
+{% endblock %}
+{% block name %}{% endblock %}
+{% block content %}
+
+<p>{{ date | notification_datetime }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Your watch</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for section, matches in topic_match_table.items() %}
+{% for name, count in matches %}
+        <tr>
+            <td>New {{ config.AGENDA_SECTION if section == "agenda" else config.WIRE_SECTION }} entries for "{{ name }}"</td>
+            <td>{{ count }}</td>
+        </tr>
+{% endfor %}
+{% endfor %}
+    </tbody>
+</table>
+
+{% for section, entries in entries.items() %}
+{% for entry in entries %}
+
+<h2>Latest {{ config.AGENDA_SECTION if section == "agenda" else config.WIRE_SECTION }} entries for "{{ entry.topic.label }}"</h2>
+{% if section == "wire" %}
+
+<p><strong>{{ get_highlighted_field(entry.item, ["headline"]) | safe }}</strong></p>
+<p>Reference: {{ entry.item.slugline }} | Source: {{ entry.item.source }}</p>
+<p>Released: {{ entry.item.versioncreated | notification_datetime }}</p>
+{{ short_highlighted_text(get_highlighted_field(entry.item, ["body_html"])) | safe }}
+<p>Open this report: <a href="{{ url_for_wire(entry.item, True, section) }}">Link</a></p>
+<p>Open all matches: <a href="{{ url_for('wire.wire', _external=True) }}?topic={{ entry.topic._id }}">Link</a></p>
+
+{% elif section == "agenda" %}
+
+<p><strong>{{ get_highlighted_field(entry.item, ["headline", "name"]) | safe }}</strong></p>
+<p>Date and time: {{ entry.item | agenda_dates_string }}{% if entry.item.location %} | Location: {{ entry.item | location_string }}{% endif %}</p>
+<p>Released: {{ entry.item.versioncreated | notification_datetime }}</p>
+
+{{ short_highlighted_text(get_highlighted_field(entry.item, ["definition_long", "description_text", "definition_short"])) | safe }}
+
+<p>Open this entry: <a href="{{ url_for_wire(entry.item, True, section) }}">Link</a></p>
+<p>Open all matches: <a href="{{ url_for('agenda.index', _external=True) }}?topic={{ entry.topic._id }}">Link</a></p>
+
+{% endif %}
+
+{% endfor %}
+{% endfor %}
+{% endblock %}

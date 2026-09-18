@@ -1,0 +1,103 @@
+[
+    {
+        "_id": "wire",
+        "init_version": 2,
+        "preview": {
+            "slugline": {"displayed": true},
+            "headline": {"displayed": true},
+            "byline": {"displayed": true},
+            "located": {"displayed": true},
+            "abstract": {"displayed": true},
+            "body_html": {"displayed": true},
+            "metadata_section": {"displayed": true},
+            "tags_section": {"displayed": true},
+            "ednotes_section": {"displayed": false},
+            "authors": {"displayed": false},
+            "item_versions": {"displayed": true},
+            "agenda_links": {"displayed": true},
+            "wordcount": {"displayed": false},
+            "charcount": {"displayed": false},
+            "genre": {"displayed": false},
+            "services": {"displayed": false},
+            "subjects": {"displayed": false},
+            "severity": {"displayed": true},
+            "threat_type": {"displayed": true},
+            "region": {"displayed": true},
+            "country": {"displayed": true},
+            "sector": {"displayed": true},
+            "tlp": {"displayed": true},
+            "metadata_fields": ["source", "//", "previous_versions", "//", "versioncreated"]
+        },
+        "details": {
+            "slugline": {"displayed": true},
+            "headline": {"displayed": true},
+            "byline": {"displayed": true},
+            "located": {"displayed": true},
+            "abstract": {"displayed": true},
+            "body_html": {"displayed": true},
+            "metadata_section": {"displayed": true},
+            "tags_section": {"displayed": true},
+            "ednotes_section": {"displayed": false},
+            "authors": {"displayed": false},
+            "item_versions": {"displayed": true},
+            "agenda_links": {"displayed": true},
+            "wordcount": {"displayed": false},
+            "charcount": {"displayed": false},
+            "genre": {"displayed": false},
+            "services": {"displayed": false},
+            "subjects": {"displayed": false},
+            "severity": {"displayed": true},
+            "threat_type": {"displayed": true},
+            "region": {"displayed": true},
+            "country": {"displayed": true},
+            "sector": {"displayed": true},
+            "tlp": {"displayed": true},
+            "metadata_fields": ["source", "//", "previous_versions", "//", "versioncreated"]
+        },
+        "list": {
+            "slugline": {"displayed": true},
+            "wordcount": {"displayed": false},
+            "charcount": {"displayed": false},
+            "metadata_fields": ["source", "//", "versioncreated"],
+            "compact_metadata_fields": ["versioncreated"]
+        },
+        "advanced_search_tabs": {},
+        "multi_select_topics": false
+    },
+    {
+        "_id": "home",
+        "init_version": 2,
+        "list": {
+            "slugline": {"displayed": true},
+            "wordcount": {"displayed": false},
+            "charcount": {"displayed": false}
+        },
+        "details": {
+            "slugline": {"displayed": true},
+            "wordcount": {"displayed": false},
+            "charcount": {"displayed": false}
+        }
+    },
+    {
+        "_id": "agenda",
+        "init_version": 2,
+        "preview": {
+            "subjects": {"displayed": false},
+            "severity": {"displayed": true},
+            "threat_type": {"displayed": true},
+            "region": {"displayed": true},
+            "country": {"displayed": true},
+            "sector": {"displayed": true},
+            "tlp": {"displayed": true}
+        },
+        "details": {
+            "subjects": {"displayed": false},
+            "severity": {"displayed": true},
+            "threat_type": {"displayed": true},
+            "region": {"displayed": true},
+            "country": {"displayed": true},
+            "sector": {"displayed": true},
+            "tlp": {"displayed": true}
+        }
+    }
+]

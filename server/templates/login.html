@@ -1,0 +1,11 @@
+{% extends "login_layout.html" %}
+
+{#
+    Shadows newsroom/templates/login.html, which is an empty extend of login_layout.html.
+    Core leaves the login_logo block empty, so the logo only appears if an instance fills it.
+    The heading text comes from the instance catalogue, not from here.
+#}
+
+{% block login_logo %}
+{% include 'login_logo.html' %}
+{% endblock %}
