@@ -586,6 +586,10 @@ class Seeder:
                 "name": product["name"],
                 "description": product.get("description", ""),
                 "query": product["query"],
+                # only read by the agenda search, where it is wrapped in a nested query on
+                # `planning_items` without any field prefixing, so its field names have to be
+                # written out in full (`planning_items.subject.code:...`)
+                "planning_item_query": product.get("planning_item_query"),
                 "is_enabled": product.get("is_enabled", True),
                 "product_type": product.get("product_type", "wire"),
                 "navigations": navigation_ids,
@@ -599,11 +603,24 @@ class Seeder:
             if action == "created" and navigation_ids and not self.log.dry_run:
                 await self.backend.update("products", product_id, {"navigations": navigation_ids})
 
+    def _product_type(self, name: str) -> str:
+        for product in self.data["products"]:
+            if product["name"] == name:
+                return product.get("product_type", "wire")
+        raise SeedError(f"{name!r} is not in the products section of the data file")
+
     async def companies(self) -> None:
         self.log.section("Companies")
         for company in self.data["companies"]:
+            # `section` on the reference, not `product_type` on the product, is what
+            # newsroom.products.utils.get_products_by_company_async filters a section's
+            # products on, so the two have to agree or the section looks unsubscribed
             product_refs = [
-                {"_id": await self._require("products", "name", name), "section": "wire", "seats": 0}
+                {
+                    "_id": await self._require("products", "name", name),
+                    "section": self._product_type(name),
+                    "seats": 0,
+                }
                 for name in company.get("products", [])
             ]
             await self._upsert(
@@ -659,17 +676,39 @@ class Seeder:
                 await self.backend.set_password(user_id, password)
                 self.log.info(f"     password set for {user['email']}")
 
+    async def _existing_user(self, email: str) -> Optional[Tuple[str, Optional[str]]]:
+        """Look up a user the seed does not own. Returns its id and company id, or None.
+
+        The deployment creates the portal administrator with its own password, role and no
+        company, so this reads that document and never writes to it outside the one
+        ``dashboards`` field the caller sets.
+        """
+
+        found = await self.backend.find("users", "email", email)
+        if found is None:
+            if self.log.dry_run:
+                return self._remember("users", email, f"<users:{email}>"), None
+            return None
+        company = found.get("company")
+        return (
+            self._remember("users", email, str(found["_id"])),
+            str(company) if company else None,
+        )
+
     def _company_of(self, email: str) -> str:
         for user in self.data["users"]:
             if user["email"] == email:
                 return user["company"]
         raise SeedError(f"{email} is not in the users section of the data file")
 
-    async def _upsert_topic(self, topic: dict) -> str:
-        """Create or update one Watch, owned by ``topic["owner"]``. Returns its id."""
+    async def _upsert_topic(self, topic: dict, company_id: Optional[str]) -> str:
+        """Create or update one Watch, owned by ``topic["owner"]``. Returns its id.
+
+        ``company_id`` may be None. A Watch of a user without a company has none either, which
+        ``TopicResourceModel.company`` allows.
+        """
 
         owner_id = await self._require("users", "email", topic["owner"])
-        company_id = await self._require("companies", "name", self._company_of(topic["owner"]))
         wanted = {
             "label": topic["label"],
             "topic_type": topic.get("topic_type", "wire"),
@@ -718,7 +757,8 @@ class Seeder:
             )
             return
         for topic in self.data["topics"]:
-            await self._upsert_topic(topic)
+            company_id = await self._require("companies", "name", self._company_of(topic["owner"]))
+            await self._upsert_topic(topic, company_id)
 
     async def dashboards(self) -> None:
         """Give each user a personal home page built from Watches of their own.
@@ -727,6 +767,10 @@ class Seeder:
         fetched by ``newsroom.wire.views.get_personal_dashboards_data``, which runs the
         normal wire search for the viewing user and company, so the company's products
         filter the result. Product backed home page cards skip that filter.
+
+        An entry marked ``existing_user`` belongs to an account the seed does not own, such as
+        the portal administrator the deployment creates. Only its ``dashboards`` field is
+        written, and the entry is skipped when there is no such user.
         """
 
         self.log.section("Personal home dashboards")
@@ -738,11 +782,19 @@ class Seeder:
             return
         for dashboard in self.data.get("dashboards", []):
             owner = dashboard["owner"]
+            if dashboard.get("existing_user"):
+                resolved = await self._existing_user(owner)
+                if resolved is None:
+                    self.log.info(f"no user {owner!r} on this instance, no dashboard for them")
+                    continue
+                user_id, company_id = resolved
+            else:
+                user_id = await self._require("users", "email", owner)
+                company_id = await self._require("companies", "name", self._company_of(owner))
             topic_ids = [
-                await self._upsert_topic(dict(watch, owner=owner))
+                await self._upsert_topic(dict(watch, owner=owner), company_id)
                 for watch in dashboard.get("watches", [])
             ]
-            user_id = await self._require("users", "email", owner)
             name = dashboard["name"]
             wanted = {
                 "dashboards": [

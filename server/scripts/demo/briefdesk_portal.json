@@ -99,6 +99,13 @@
             "product_type": "wire",
             "is_enabled": true,
             "order": 400
+        },
+        {
+            "name": "Risk calendar",
+            "description": "Scheduled and expected events for your regions and sectors",
+            "product_type": "agenda",
+            "is_enabled": true,
+            "order": 100
         }
     ],
 
@@ -177,6 +184,39 @@
             "description": "Internal staff access to every released report.",
             "query": "profile:(Alert OR DailyBrief OR CountryAssessment OR RFIResponse)",
             "navigations": ["Alerts", "Daily briefs", "Country assessments", "All reports"]
+        },
+
+        {
+            "name": "Nordfreight: Risk calendar (Alerting tier)",
+            "description": "Alerting tier. Calendar entries for Europe and the logistics sector.",
+            "product_type": "agenda",
+            "query": "subject.code:europe AND subject.code:logistics",
+            "planning_item_query": "planning_items.subject.code:europe AND planning_items.subject.code:logistics",
+            "navigations": ["Risk calendar"]
+        },
+        {
+            "name": "Aurelia Pharma: Risk calendar (Advisory tier)",
+            "description": "Advisory tier. Calendar entries for Europe and MENA, pharmaceuticals sector.",
+            "product_type": "agenda",
+            "query": "subject.code:(europe OR mena) AND subject.code:pharma",
+            "planning_item_query": "planning_items.subject.code:(europe OR mena) AND planning_items.subject.code:pharma",
+            "navigations": ["Risk calendar"]
+        },
+        {
+            "name": "Castellan Energy: Risk calendar (Analyst tier)",
+            "description": "Analyst tier. Calendar entries for MENA and the energy sector.",
+            "product_type": "agenda",
+            "query": "subject.code:mena AND subject.code:energy",
+            "planning_item_query": "planning_items.subject.code:mena AND planning_items.subject.code:energy",
+            "navigations": ["Risk calendar"]
+        },
+        {
+            "name": "Halden Risk Intelligence: Risk calendar (internal)",
+            "description": "Internal staff access to every calendar entry that carries a region.",
+            "product_type": "agenda",
+            "query": "subject.code:(europe OR mena OR americas OR apac OR ssa)",
+            "planning_item_query": "planning_items.subject.code:(europe OR mena OR americas OR apac OR ssa)",
+            "navigations": ["Risk calendar"]
         }
     ],
 
@@ -191,7 +231,8 @@
             "products": [
                 "Nordfreight: Alerts (Alerting tier)",
                 "Nordfreight: Daily briefs (Alerting tier)",
-                "Nordfreight: Country assessments (Alerting tier)"
+                "Nordfreight: Country assessments (Alerting tier)",
+                "Nordfreight: Risk calendar (Alerting tier)"
             ]
         },
         {
@@ -199,13 +240,14 @@
             "url": "https://aureliapharma.example",
             "contact_name": "Hanna Weiss",
             "contact_email": "hanna.weiss@aureliapharma.example",
-            "sections": {"wire": true, "agenda": true, "monitoring": false},
+            "sections": {"wire": true, "agenda": true, "monitoring": true},
             "internal": false,
             "products": [
                 "Aurelia Pharma: Alerts (Advisory tier)",
                 "Aurelia Pharma: Daily briefs (Advisory tier)",
                 "Aurelia Pharma: Country assessments (Advisory tier)",
-                "Aurelia Pharma: RFI responses (Advisory tier)"
+                "Aurelia Pharma: RFI responses (Advisory tier)",
+                "Aurelia Pharma: Risk calendar (Advisory tier)"
             ]
         },
         {
@@ -213,13 +255,14 @@
             "url": "https://castellan.example",
             "contact_name": "Karim Saleh",
             "contact_email": "karim.saleh@castellan.example",
-            "sections": {"wire": true, "agenda": true, "monitoring": false},
+            "sections": {"wire": true, "agenda": true, "monitoring": true},
             "internal": false,
             "products": [
                 "Castellan Energy: Alerts (Analyst tier)",
                 "Castellan Energy: Daily briefs (Analyst tier)",
                 "Castellan Energy: Country assessments (Analyst tier)",
-                "Castellan Energy: RFI responses (Analyst tier)"
+                "Castellan Energy: RFI responses (Analyst tier)",
+                "Castellan Energy: Risk calendar (Analyst tier)"
             ]
         },
         {
@@ -229,7 +272,10 @@
             "contact_email": "lucia.ferro@halden.example",
             "sections": {"wire": true, "agenda": true, "monitoring": true},
             "internal": true,
-            "products": ["Halden Risk Intelligence: All reports (internal)"]
+            "products": [
+                "Halden Risk Intelligence: All reports (internal)",
+                "Halden Risk Intelligence: Risk calendar (internal)"
+            ]
         }
     ],
 
@@ -384,6 +430,22 @@
                 {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"},
                 {"label": "Requests for information", "query": "profile:RFIResponse"}
             ]
+        },
+        {
+            "owner": "admin@example.com",
+            "existing_user": true,
+            "name": "Operations overview",
+            "type": "4-picture-text",
+            "watches": [
+                {"label": "Critical and high alerts", "filter": {"severity": ["critical", "high"]}},
+                {"label": "Latest alerts", "query": "profile:Alert"},
+                {"label": "Briefs and assessments", "query": "profile:(DailyBrief OR CountryAssessment)"},
+                {"label": "Europe", "filter": {"region": ["europe"]}},
+                {"label": "Middle East and North Africa", "filter": {"region": ["mena"]}},
+                {"label": "Americas", "filter": {"region": ["americas"]}},
+                {"label": "Asia-Pacific", "filter": {"region": ["apac"]}},
+                {"label": "Sub-Saharan Africa", "filter": {"region": ["ssa"]}}
+            ]
         }
     ],
 
@@ -418,6 +480,48 @@
             "headline_subject": false,
             "schedule": {"interval": "weekly", "day": "mon", "time": "07:00"},
             "users": ["erik.dahl@nordfreight.example", "ines.morel@nordfreight.example"]
+        },
+        {
+            "name": "Aurelia Pharma weekly digest",
+            "subject": "Briefdesk weekly digest",
+            "description": "Weekly PDF digest of pharmaceuticals reports for Aurelia Pharma.",
+            "company": "Aurelia Pharma",
+            "query": "subject.code:(europe OR mena) AND subject.code:pharma",
+            "alert_type": "full_text",
+            "format_type": "monitoring_pdf",
+            "is_enabled": true,
+            "always_send": true,
+            "headline_subject": false,
+            "schedule": {"interval": "weekly", "day": "mon", "time": "07:00"},
+            "users": ["hanna.weiss@aureliapharma.example"]
+        },
+        {
+            "name": "Castellan Energy daily digest",
+            "subject": "Briefdesk daily digest",
+            "description": "Daily PDF digest of MENA energy reports for Castellan Energy.",
+            "company": "Castellan Energy",
+            "query": "subject.code:mena AND subject.code:energy",
+            "alert_type": "full_text",
+            "format_type": "monitoring_pdf",
+            "is_enabled": true,
+            "always_send": true,
+            "headline_subject": false,
+            "schedule": {"interval": "daily", "time": "07:00"},
+            "users": ["karim.saleh@castellan.example"]
+        },
+        {
+            "name": "Halden operations watch list",
+            "subject": "Briefdesk operations watch list",
+            "description": "Daily PDF round up of critical and high severity reports for the Halden operations team.",
+            "company": "Halden Risk Intelligence",
+            "query": "subject.code:(critical OR high)",
+            "alert_type": "full_text",
+            "format_type": "monitoring_pdf",
+            "is_enabled": true,
+            "always_send": true,
+            "headline_subject": false,
+            "schedule": {"interval": "daily", "time": "07:00"},
+            "users": ["lucia.ferro@halden.example"]
         }
     ]
 }

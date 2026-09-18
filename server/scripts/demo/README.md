@@ -1,7 +1,8 @@
 # Briefdesk portal seed
 
-Puts a freshly deployed Briefdesk Portal into the demo state: companies, tier packages,
-users, navigations, Watches, a personal home page per user and a monitoring profile.
+Puts a freshly deployed Briefdesk Portal into the demo state: companies, tier packages for
+the Intelligence Feed and the Risk Calendar, users, navigations, Watches, a personal home
+page per user and one monitoring profile per company.
 Re-runnable: everything is looked up by name or email first, then created or updated.
 
 Files:
@@ -22,6 +23,31 @@ user gets a personal dashboard (the "Personalize Home" feature) built from Watch
 own: `newsroom/wire/views.py::get_personal_dashboards_data` fetches those items with the
 ordinary wire search for that user and company, so the company's products filter the
 result exactly as they do in the Intelligence Feed.
+
+The portal administrator gets one too, "Operations overview", with a row per region. It is
+written by the `dashboards` section through a separate path: an entry with
+`"existing_user": true` is a user the seed does **not** create or change. Only the
+`dashboards` field is written, the account keeps the password, role and company the
+deployment gave it, and the whole entry is skipped with a log line when there is no such
+user. The administrator has no company, so `get_personal_dashboards_data` passes
+`company=None` and `is_admin=True` into the search and
+`newsroom/search/filters.py::apply_products_filter` returns early ("admin will see
+everything by default"). The overview is therefore unfiltered, which is what an internal
+operations view wants. The Watches it creates have `company: null`, which
+`TopicResourceModel.company` allows, and `get_user_topics_async` finds them by
+`{"user": user.id}`.
+
+### The DEFAULT / MY HOME toggle cannot be hidden
+
+`assets/home/components/HomeApp.tsx` renders the toggle whenever the user has the `wire`
+section and `personalizedDashboards[0].topic_items.length > 0` (`this.hasPersonalDashboard`,
+computed once in the constructor), and it opens on MY HOME in that case
+(`activeOptionId: this.hasPersonalDashboard ? 'my-home' : 'default'`). The two radio options
+are hardcoded, and the DEFAULT panel renders `DashboardPanels` with the `newsroom` cards,
+which shows "There's no card defined for Home page!" when that list is empty. No setting
+suppresses either the option or the warning; `PERSONAL_DASHBOARD_CARD_TYPE` only picks the
+card type. So the empty DEFAULT tab stays, one click away, until either global cards come
+back or newsroom-core changes. It is left as it is.
 
 ## On Fireq (automatic)
 
@@ -49,7 +75,9 @@ Nobody has a shell on a Fireq instance, so the branch seeds itself. `server/Proc
   https://nra-hgbriefdeskportaldemo.test.superdesk.org/mail/
 - To seed again: the `[reset db]` button on https://test.superdesk.org/nra drops the database and
   with it the marker. Or bump `SEED_VERSION` in `run_seed.sh` and push (the seed is idempotent,
-  so this only adds and updates).
+  so this only adds and updates). It is at `v3`; the instance was already seeded at `v2`, so the
+  next deploy re-runs and adds the agenda products, the administrator's dashboard and the three
+  new monitoring profiles on top of the existing data.
 - Push order: this branch first, then `hg/briefdesk-branding` in superdesk-client-core, then
   `hg/briefdesk-demo` in superdesk. The portal should be seeded before Superdesk pushes content,
   so that watches exist when the first reports arrive.
@@ -200,6 +228,59 @@ Each company gets one product per report type it is entitled to, and each produc
 attached to the navigation for that report type plus "All reports". That way the tier is
 the union of the company's products, and the navigation picks a subset of it.
 
+## The Risk Calendar (agenda) needs its own products
+
+`newsroom/agenda/views.py::get_view_data` calls `check_user_has_products` with
+`get_products_by_company(company, product_type=SectionEnum.AGENDA)`, so a company with only
+wire products gets a 403 "There is no product associated with your user". Each client
+company now has one agenda product mirroring its Intelligence Feed entitlement, plus one
+for Halden, all attached to the agenda navigation "Risk calendar". The section reference on
+the company (`products[].section`) has to say `agenda`, not the product's `product_type`:
+`newsroom/products/utils.py::get_products_by_company_async` filters on
+`product.section == product_type`. The seed derives it from `product_type` in the data file.
+
+An agenda product has two query fields and they behave differently:
+
+- `query` is applied by `newsroom/search/filters.py::apply_products_filter` as a root scope
+  `query_string`, exactly as for wire. `AgendaItem.subject` (`newsroom/types/agenda.py`) is
+  `fields.nested_list(include_in_parent=True)` just like `WireItem.subject`, so
+  `subject.code:europe` matches the flattened root copy. Bare, unqualified words would only
+  hit `AGENDA_SEARCH_FIELDS` (name, slugline, headline, the definitions, description_text,
+  location), so every clause is field qualified.
+- `planning_item_query` is applied by `newsroom/agenda/filters.py::apply_product_planning_filters`,
+  which wraps it in `nested_query("planning_items", ...)`. That path calls
+  `planning_items_query_string(...)` **without** `nested=True`, so nothing rewrites the field
+  names: a clause has to be written out as `planning_items.subject.code:europe` or it
+  addresses a root field that does not exist inside the nested document and matches nothing.
+  `AgendaPlanningItem.subject` is nested with `include_in_parent` too, so the single prefix is
+  enough.
+
+Both clauses land in the same `should` list with `minimum_should_match: 1`, so an entry
+matches when either the event's own subjects or one of its planning items qualifies.
+
+### What the Superdesk side must send
+
+- Tag **the event**, not only its planning items. For an event backed agenda item
+  `newsroom/agenda/agenda_service.py::convert_event_to_agenda_dict` sets
+  `agenda["subject"] = format_qcode_items(event.get("subject"))` from the event alone; the
+  planning subjects go to `planning_items[].subject`. Only a planning item with no
+  `event_item` copies its own subjects to the root.
+- `subject` entries as `{"qcode": ..., "name": ..., "scheme": ...}`. `format_qcode_items`
+  copies `qcode` into `code` on ingest, so the portal queries `code`.
+- **Codes, not names.** The products match `subject.code:europe`, `subject.code:logistics`
+  and the rest against the contract qcodes. `code` is a `keyword`, so the match is exact and
+  case sensitive: send `europe`, not `Europe`.
+- Schemes `region` and `sector` are what the entitlement needs; `country` and `threat_type`
+  feed the `AGENDA_GROUPS` filter panel. The qcodes are unique across all schemes, so the
+  product queries do not name the scheme (see the `include_in_parent` caveat above).
+- Nothing drops custom schemes on the agenda side. `WIRE_SUBJECT_SCHEME_WHITELIST` is read
+  only in the wire branch of `newsroom/push/publishing.py`, and `AGENDA_CSV_SUBJECT_SCHEMES`
+  is a CSV export filter. No `settings.py` change was needed, and `AGENDA_GROUPS` was
+  already configured there for all six schemes.
+- An entry with a region but no sector matches no client agenda product, because every
+  client entitlement is region AND sector. It still reaches Halden, whose product asks for a
+  region only. Tag both on anything a client should see in the Risk Calendar.
+
 Watch filters are different: they use the filter group mechanism, which does produce a
 correlated `nested` query, and it matches on `subject.name`, the display name, because
 `WIRE_GROUPS` in `server/settings.py` leaves `nested.searchfield` at its default. If that
@@ -227,19 +308,33 @@ There is no undo. To start over:
   alternative route is `server/data/ui_config.json` plus
   `python manage.py initialize_data -n ui_config -f`.
 - The home page of a user without a personal dashboard is empty, because the seed creates no
-  global cards. That is the portal administrator `admin@example.com`, who is not in the data
-  file and works from `/wire` and the admin screens.
+  global cards. Everyone in the data file has one, and so does `admin@example.com` through
+  the `existing_user` path. Any account added by hand afterwards will land on the empty
+  DEFAULT panel.
+- The portal administrator cannot have a monitoring profile.
+  `newsroom/monitoring/views.py::get_monitoring_for_company` lists profiles with
+  `search({"company": user.company})` and there is no administrator bypass, so a
+  company-less account always sees an empty `/monitoring`. `MonitoringForm` also makes
+  `company` a `DataRequired()` field. The seed therefore does not try. What the
+  administrator does get is Settings, Monitoring (`/settings/monitoring`), where
+  `GET /monitoring/all` with no `where` parameter lists every profile in the instance, now
+  four instead of one.
 - The personal dashboard cards are rendered as `PERSONAL_DASHBOARD_CARD_TYPE`, a single
   setting for the whole instance, default `4-picture-text`. The `type` stored on each
   dashboard is what the Personalize Home modal writes and is not read back.
-- A personal dashboard shows at most 6 Watches, and the Personalize Home modal replaces the
-  whole dashboard when a user edits it.
+- `PersonalizeHomeModal` caps a selection at `MAX_SELECTED_TOPICS = 6`, but the server renders
+  every entry of `dashboards[].topic_ids`. The administrator's "Operations overview" has 8, so
+  a pass through the Personalize Home modal would trim it. The modal also replaces the whole
+  dashboard when a user edits it.
 - If global cards are ever wanted back, `PERMISSION_DASHBOARD_CARDS` in `server/settings.py`
   makes the home page mark each card item with `user_has_access` and blank its body, but the
   headlines of items outside the entitlement are still listed.
-- The monitoring profile is written whether or not the monitoring section is enabled and
+- A monitoring profile is written whether or not the monitoring section is enabled and
   whether or not Celery beat is running. Nothing will actually be emailed unless the
-  `beat` and `worker` processes are up.
+  `beat` and `worker` processes are up. All four companies now have `sections.monitoring`
+  on, which is what puts the profile in front of their users and lists the company in the
+  Settings, Monitoring company filter (`newsroom/monitoring/views.py::get_settings_data`
+  searches `{"sections.monitoring": True}`).
 - `--dry-run` connects to nothing, so it reports every document as "would create" even if
   the portal already has it. It is there to validate the data file, not to diff an instance.
 - Company `expiry_date` is cleared and `archive_access` is on for all four companies, so
