@@ -9,6 +9,37 @@ Files:
 - `seed_portal.py` The script. Python 3 standard library only.
 - `briefdesk_portal.json` All the data. Edit this, not the script.
 
+## On Fireq (automatic)
+
+Nobody has a shell on a Fireq instance, so the branch seeds itself. `server/Procfile` has a
+`seed:` entry running `scripts/demo/run_seed.sh`, which:
+
+1. does nothing unless `DB_NAME` is set (Fireq exports it, the Docker setups here do not);
+   `BRIEFDESK_SEED=1` forces it and `BRIEFDESK_SEED=0` disables it,
+2. skips when the marker document `briefdesk_seed/v1` exists in MongoDB,
+3. waits for the admin user `admin@example.com` to exist, because Fireq starts the app before it
+   runs `initialize_data` and `create_user`, then waits another 45 seconds for the rest of the
+   initialisation,
+4. runs `python3 -u scripts/demo/seed_portal.py --transport local`, which also applies
+   `server/theme/briefdesk_ui_config.wire.json` to the `ui_config` collection,
+5. writes the marker on success, and then idles forever. It never exits, because honcho stops the
+   whole instance when one Procfile process ends.
+
+- Instance: https://nra-hgbriefdeskportaldemo.test.superdesk.org (Fireq strips everything but
+  letters and digits from the branch name `hg/briefdesk-portal-demo`).
+- Admin login: `admin@example.com` / `admin`. Client users: see the table below, password
+  `Briefdesk-demo-1`.
+- Seed output: https://nra-hgbriefdeskportaldemo.test.superdesk.org/logs/ , lines start with
+  `[briefdesk-seed]`.
+- Mail the portal sends (watch alerts, digests, shared items):
+  https://nra-hgbriefdeskportaldemo.test.superdesk.org/mail/
+- To seed again: the `[reset db]` button on https://test.superdesk.org/nra drops the database and
+  with it the marker. Or bump `SEED_VERSION` in `run_seed.sh` and push (the seed is idempotent,
+  so this only adds and updates).
+- Push order: this branch first, then `hg/briefdesk-branding` in superdesk-client-core, then
+  `hg/briefdesk-demo` in superdesk. The portal should be seeded before Superdesk pushes content,
+  so that watches exist when the first reports arrive.
+
 ## Run it
 
 Two transports. Read "Which transport" below before choosing.
@@ -99,9 +130,9 @@ So: deploy the portal, run this script, then wire the Superdesk recipient and pu
 1. In Superdesk, Settings, Recipients, create a recipient `Briefdesk Portal`.
 2. Destination: format `Newsroom NINJS`, delivery type `HTTP Push`, resource URL
    `<PORTAL_URL>/push`, secret token `briefdesk-demo-push-key`.
-3. The portal reads the same value from `PUSH_KEY` in `server/settings.py`, which defaults
-   to `briefdesk-demo-push-key` and can be overridden with the `PUSH_KEY` environment
-   variable. Both sides must match or every push is rejected.
+3. The portal has the same value fixed as `PUSH_KEY` in `server/settings.py`. The environment
+   is not read there, because Fireq exports its own `PUSH_KEY` to every Newsroom test instance.
+   Both sides must match or every push is rejected.
 4. Give the recipient a product or content filter that matches every released report, so
    the portal gets everything and does its own per-client filtering.
 

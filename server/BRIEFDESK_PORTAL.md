@@ -151,8 +151,9 @@ default. Only upper case names are read, which is why the helper names in that f
 Things in there that are not obvious:
 
 - **`PUSH_KEY` must be bytes.** `newsroom/push/utils.py::test_signature` calls `hmac.new(key, ...)`.
-  The value is `os.environ.get("PUSH_KEY", "briefdesk-demo-push-key").encode()`, so an environment
-  variable overrides the demo default.
+  The value is fixed to `b"briefdesk-demo-push-key"` and the environment is not read, because Fireq
+  exports `PUSH_KEY="newsroom"` to every Newsroom test instance and the Superdesk demo seed signs
+  with the fixed value. A real deployment would read it from the environment again.
 - **`BABEL_DEFAULT_TIMEZONE` has to be set alongside `DEFAULT_TIMEZONE`.** Core derives it once at
   import time in `default_settings.py`, so overriding only `DEFAULT_TIMEZONE` would leave Babel on
   the server's local zone.

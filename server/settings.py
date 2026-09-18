@@ -72,7 +72,11 @@ TRANSLATIONS_PATH = SERVER_PATH.joinpath("translations")
 # Superdesk push
 
 # ``newsroom.push.utils.test_signature`` calls ``hmac.new(key, ...)``, so this has to be bytes.
-PUSH_KEY = os.environ.get("PUSH_KEY", "briefdesk-demo-push-key").encode()
+# The environment is deliberately not read: Fireq exports the same ``PUSH_KEY`` to every Newsroom
+# test instance, and the Superdesk demo seed signs with the value below. Both instances have to
+# agree without anyone having access to the host, so the key is fixed here. Demo only, a real
+# deployment takes it from the environment.
+PUSH_KEY = b"briefdesk-demo-push-key"
 
 # ``newsroom.push.publishing`` drops every ``subject`` entry whose scheme is not listed here, and
 # that includes entries with no scheme at all. These ids are the Superdesk custom vocabulary ids.
