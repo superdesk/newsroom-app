@@ -194,7 +194,11 @@ def po_header():
         "MIME-Version: 1.0",
         "Content-Type: text/plain; charset=utf-8",
         "Content-Transfer-Encoding: 8bit",
-        "Plural-Forms: nplurals=2; plural=(n != 1);",
+        # No Plural-Forms header on purpose. With one, gettext compiles the expression through a
+        # recursive parser the first time the catalogue is loaded, and newsroom loads it from
+        # deep inside template rendering, where that parser hits the recursion limit and the page
+        # answers 500 with "plural form expression is too complex". Without the header gettext
+        # falls back to ``n != 1``, which is the English rule anyway.
     ]
 
 
