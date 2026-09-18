@@ -241,6 +241,10 @@
 }
 
 .bd-map__canvas {
+    /* Leaflet gives its panes z-indexes up to 1000. A stacking context of its own keeps them under
+       the portal's expanding side navigation. */
+    z-index: 0;
+    isolation: isolate;
     position: absolute;
     inset: 0;
     background: var(--bd-canvas);

@@ -4,8 +4,10 @@
     Shadows newsroom/templates/login.html, which is an empty extend of login_layout.html.
     Core leaves the login_logo block empty, so the logo only appears if an instance fills it.
     The heading text comes from the instance catalogue, not from here.
+    Core's login_logo.html is a bare <img>, while its stylesheet sizes and centres the logo through a
+    .login-logo wrapper, so the wrapper is added here.
 #}
 
 {% block login_logo %}
-{% include 'login_logo.html' %}
+<div class="login-logo">{% include 'login_logo.html' %}</div>
 {% endblock %}

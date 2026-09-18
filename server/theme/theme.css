@@ -104,17 +104,6 @@
     --ajs-message-color-bg--success: var(--brand-green-action);
 }
 
-/*
- * Login logo.
- *
- * The white logo sits on a navy plaque inside the white login card, which keeps the wordmark on the
- * background it was drawn for.
- */
-.login-logo {
-    background-color: var(--brand-navy);
-    border-radius: var(--border-radius--l);
-    margin-block-end: var(--space--2);
-}
 
 /*
  * Severity tags in the item preview.

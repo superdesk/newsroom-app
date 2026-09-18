@@ -199,7 +199,7 @@ The filenames core looks for, verified in `base_layout.html`, `layout_without_ba
 | `favicon.ico` | `base_layout.html`, `layout_without_bars.html` | copy of `assets/favicon.ico` |
 | `theme.css` | `base_layout.html`, `layout_without_bars.html` | the Briefdesk palette |
 | `newshub_logo.svg` | `logo.html`, the top navigation | copy of `assets/briefdesk-logo_white.svg` (the bar is navy) |
-| `login-logo.svg` | `login_logo.html` | copy of `assets/briefdesk-logo_white.svg` |
+| `login-logo.svg` | `login_logo.html` | copy of `assets/briefdesk-logo.svg`, because the login card is white. `templates/login.html` wraps it in the `.login-logo` element core's stylesheet expects |
 
 `briefdesk-logo.svg` (dark version) and `briefdesk-mark.svg` are also in the folder. Nothing
 references them yet; they are there so anything added later can reach them at `/theme/<name>`.
