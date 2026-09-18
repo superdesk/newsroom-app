@@ -574,6 +574,9 @@
 }
 
 .bd-map__site-marker {
+    /* A span is inline by default, and an inline box ignores width and height. */
+    display: block;
+    box-sizing: border-box;
     width: 12px;
     height: 12px;
     background: var(--bd-ink);
