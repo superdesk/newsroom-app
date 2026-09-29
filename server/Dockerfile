@@ -28,9 +28,6 @@ ENV VIRTUAL_ENV=/opt/venv
 RUN python3 -m venv "$VIRTUAL_ENV"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# update venv
-RUN python3 -m pip install -U pip wheel setuptools
-
 # install server
 WORKDIR /opt/newsroom/
 COPY requirements.txt .
