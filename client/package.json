@@ -4,7 +4,7 @@
     "build": "webpack --mode production --progress"
   },
   "dependencies": {
-    "newsroom-core": "github:superdesk/newsroom-core#develop"
+    "newsroom-core": "github:superdesk/newsroom-core#hg/localwire-portal-a11y"
   },
   "volta": {
     "node": "22.22.0"
