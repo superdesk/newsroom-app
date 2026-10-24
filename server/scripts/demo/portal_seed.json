@@ -1,0 +1,660 @@
+{
+    "meta": {
+        "name": "Newshub seed",
+        "generated_by": "superdesk-market-kit toolkit/build/newsroom from contract.yaml; regenerate, do not edit",
+        "user_password_env": "PORTAL_USER_PASSWORD",
+        "report_profiles": {
+            "story": "Story",
+            "weekly_advisory": "Weeklyadvisory"
+        }
+    },
+    "vocabularies": {
+        "local_authority": {
+            "leeds": "Leeds City Council",
+            "bradford": "Bradford Council",
+            "kirklees": "Kirklees Council",
+            "sheffield": "Sheffield City Council",
+            "newcastle": "Newcastle City Council",
+            "sunderland": "Sunderland City Council",
+            "gateshead": "Gateshead Council",
+            "northumberland": "Northumberland County Council",
+            "birmingham": "Birmingham City Council",
+            "coventry": "Coventry City Council",
+            "nottingham": "Nottingham City Council",
+            "derbyshire": "Derbyshire County Council",
+            "cardiff": "Cardiff Council",
+            "swansea": "Swansea Council",
+            "gwynedd": "Gwynedd Council"
+        },
+        "region": {
+            "north_east": "North East",
+            "north_west": "North West",
+            "yorkshire_humber": "Yorkshire and the Humber",
+            "east_midlands": "East Midlands",
+            "west_midlands": "West Midlands",
+            "east_of_england": "East of England",
+            "london": "London",
+            "south_east": "South East",
+            "south_west": "South West",
+            "wales": "Wales",
+            "scotland": "Scotland",
+            "northern_ireland": "Northern Ireland"
+        },
+        "distribution_profile": {
+            "all_partners": "All qualifying partners",
+            "print_digital": "Print and digital publishers",
+            "broadcast": "Broadcast partners",
+            "hyperlocal": "Hyperlocal and community titles"
+        },
+        "category": {
+            "council_meeting": "Council meetings and decisions",
+            "planning": "Planning and development",
+            "budget": "Budgets and council tax",
+            "housing": "Housing",
+            "transport": "Transport and highways",
+            "education": "Schools and education",
+            "social_care": "Health and social care",
+            "environment": "Environment and waste",
+            "community": "Libraries, leisure and community",
+            "governance": "Elections and governance",
+            "economy": "Economy and regeneration"
+        },
+        "image_rights": {
+            "rights_free": "Rights-free, free for all partners to use",
+            "no_media": "No images or media"
+        }
+    },
+    "navigations": [
+        {
+            "name": "Stories",
+            "description": "Council stories for your areas",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 100
+        },
+        {
+            "name": "Weekly advisories",
+            "description": "What reporters plan to cover in the next seven days",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 200
+        },
+        {
+            "name": "All content",
+            "description": "Everything your organisation is entitled to",
+            "product_type": "wire",
+            "is_enabled": true,
+            "order": 300
+        }
+    ],
+    "products": [
+        {
+            "name": "Ridings Press: Stories",
+            "description": "Partner tier. Stories where region Yorkshire and the Humber, distribution profile All qualifying partners or Print and digital publishers.",
+            "query": "profile:Story AND subject.code:yorkshire_humber AND subject.code:(all_partners OR print_digital)",
+            "navigations": [
+                "Stories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Ridings Press: Weekly advisories",
+            "description": "Partner tier. Weekly advisories where region Yorkshire and the Humber, distribution profile All qualifying partners or Print and digital publishers.",
+            "query": "profile:Weeklyadvisory AND subject.code:yorkshire_humber AND subject.code:(all_partners OR print_digital)",
+            "navigations": [
+                "Weekly advisories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Tynebridge Media: Stories",
+            "description": "Partner tier. Stories where region North East, distribution profile All qualifying partners or Print and digital publishers.",
+            "query": "profile:Story AND subject.code:north_east AND subject.code:(all_partners OR print_digital)",
+            "navigations": [
+                "Stories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Tynebridge Media: Weekly advisories",
+            "description": "Partner tier. Weekly advisories where region North East, distribution profile All qualifying partners or Print and digital publishers.",
+            "query": "profile:Weeklyadvisory AND subject.code:north_east AND subject.code:(all_partners OR print_digital)",
+            "navigations": [
+                "Weekly advisories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Shires Ledger: Stories",
+            "description": "Partner tier. Stories where local authority Birmingham City Council or Coventry City Council or Nottingham City Council or Derbyshire County Council, distribution profile All qualifying partners or Print and digital publishers.",
+            "query": "profile:Story AND subject.code:(birmingham OR coventry OR nottingham OR derbyshire) AND subject.code:(all_partners OR print_digital)",
+            "navigations": [
+                "Stories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Shires Ledger: Weekly advisories",
+            "description": "Partner tier. Weekly advisories where local authority Birmingham City Council or Coventry City Council or Nottingham City Council or Derbyshire County Council, distribution profile All qualifying partners or Print and digital publishers.",
+            "query": "profile:Weeklyadvisory AND subject.code:(birmingham OR coventry OR nottingham OR derbyshire) AND subject.code:(all_partners OR print_digital)",
+            "navigations": [
+                "Weekly advisories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Cambria Local: Stories",
+            "description": "Partner tier. Stories where region Wales, distribution profile All qualifying partners or Hyperlocal and community titles.",
+            "query": "profile:Story AND subject.code:wales AND subject.code:(all_partners OR hyperlocal)",
+            "navigations": [
+                "Stories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Cambria Local: Weekly advisories",
+            "description": "Partner tier. Weekly advisories where region Wales, distribution profile All qualifying partners or Hyperlocal and community titles.",
+            "query": "profile:Weeklyadvisory AND subject.code:wales AND subject.code:(all_partners OR hyperlocal)",
+            "navigations": [
+                "Weekly advisories",
+                "All content"
+            ]
+        },
+        {
+            "name": "Town Hall Reporting Network: All content (internal)",
+            "description": "Internal staff access to every released report.",
+            "query": "profile:(Story OR Weeklyadvisory)",
+            "navigations": [
+                "Stories",
+                "Weekly advisories",
+                "All content"
+            ]
+        }
+    ],
+    "companies": [
+        {
+            "name": "Ridings Press Group",
+            "url": "https://ridingspress.example",
+            "contact_name": "Joanne Firth",
+            "contact_email": "joanne.firth@ridingspress.example",
+            "sections": {
+                "wire": true
+            },
+            "internal": false,
+            "products": [
+                "Ridings Press: Stories",
+                "Ridings Press: Weekly advisories"
+            ]
+        },
+        {
+            "name": "Tynebridge Media",
+            "url": "https://tynebridgemedia.example",
+            "contact_name": "Kerry Dodds",
+            "contact_email": "kerry.dodds@tynebridgemedia.example",
+            "sections": {
+                "wire": true
+            },
+            "internal": false,
+            "products": [
+                "Tynebridge Media: Stories",
+                "Tynebridge Media: Weekly advisories"
+            ]
+        },
+        {
+            "name": "Shires Ledger Group",
+            "url": "https://shiresledger.example",
+            "contact_name": "Anita Sharma",
+            "contact_email": "anita.sharma@shiresledger.example",
+            "sections": {
+                "wire": true
+            },
+            "internal": false,
+            "products": [
+                "Shires Ledger: Stories",
+                "Shires Ledger: Weekly advisories"
+            ]
+        },
+        {
+            "name": "Cambria Local Media",
+            "url": "https://cambrialocal.example",
+            "contact_name": "Gareth Lloyd",
+            "contact_email": "gareth.lloyd@cambrialocal.example",
+            "sections": {
+                "wire": true
+            },
+            "internal": false,
+            "products": [
+                "Cambria Local: Stories",
+                "Cambria Local: Weekly advisories"
+            ]
+        },
+        {
+            "name": "Town Hall Reporting Network",
+            "url": "https://townhall-reporting.example",
+            "contact_name": "Sam Okoro",
+            "contact_email": "sam.okoro@townhall-reporting.example",
+            "sections": {
+                "wire": true
+            },
+            "internal": true,
+            "products": [
+                "Town Hall Reporting Network: All content (internal)"
+            ]
+        }
+    ],
+    "users": [
+        {
+            "email": "joanne.firth@ridingspress.example",
+            "first_name": "Joanne",
+            "last_name": "Firth",
+            "user_type": "company_admin",
+            "company": "Ridings Press Group",
+            "manage_company_topics": true
+        },
+        {
+            "email": "david.ainsworth@ridingspress.example",
+            "first_name": "David",
+            "last_name": "Ainsworth",
+            "user_type": "public",
+            "company": "Ridings Press Group"
+        },
+        {
+            "email": "kerry.dodds@tynebridgemedia.example",
+            "first_name": "Kerry",
+            "last_name": "Dodds",
+            "user_type": "company_admin",
+            "company": "Tynebridge Media",
+            "manage_company_topics": true
+        },
+        {
+            "email": "paul.hedley@tynebridgemedia.example",
+            "first_name": "Paul",
+            "last_name": "Hedley",
+            "user_type": "public",
+            "company": "Tynebridge Media"
+        },
+        {
+            "email": "anita.sharma@shiresledger.example",
+            "first_name": "Anita",
+            "last_name": "Sharma",
+            "user_type": "company_admin",
+            "company": "Shires Ledger Group",
+            "manage_company_topics": true
+        },
+        {
+            "email": "chris.wheeler@shiresledger.example",
+            "first_name": "Chris",
+            "last_name": "Wheeler",
+            "user_type": "public",
+            "company": "Shires Ledger Group"
+        },
+        {
+            "email": "gareth.lloyd@cambrialocal.example",
+            "first_name": "Gareth",
+            "last_name": "Lloyd",
+            "user_type": "company_admin",
+            "company": "Cambria Local Media",
+            "manage_company_topics": true
+        },
+        {
+            "email": "megan.price@cambrialocal.example",
+            "first_name": "Megan",
+            "last_name": "Price",
+            "user_type": "public",
+            "company": "Cambria Local Media"
+        },
+        {
+            "email": "sam.okoro@townhall-reporting.example",
+            "first_name": "Sam",
+            "last_name": "Okoro",
+            "user_type": "internal",
+            "company": "Town Hall Reporting Network",
+            "manage_company_topics": true
+        }
+    ],
+    "topics": [
+        {
+            "label": "Leeds stories",
+            "owner": "joanne.firth@ridingspress.example",
+            "topic_type": "wire",
+            "is_global": false,
+            "filter": {
+                "local_authority": [
+                    "leeds"
+                ]
+            },
+            "subscribers": [
+                {
+                    "user": "joanne.firth@ridingspress.example",
+                    "notification_type": "real-time"
+                }
+            ]
+        },
+        {
+            "label": "Planning stories in Sunderland",
+            "owner": "kerry.dodds@tynebridgemedia.example",
+            "topic_type": "wire",
+            "is_global": true,
+            "filter": {
+                "local_authority": [
+                    "sunderland"
+                ],
+                "category": [
+                    "planning"
+                ]
+            },
+            "subscribers": [
+                {
+                    "user": "kerry.dodds@tynebridgemedia.example",
+                    "notification_type": "real-time"
+                },
+                {
+                    "user": "paul.hedley@tynebridgemedia.example",
+                    "notification_type": "scheduled"
+                }
+            ]
+        },
+        {
+            "label": "Welsh council stories",
+            "owner": "gareth.lloyd@cambrialocal.example",
+            "topic_type": "wire",
+            "is_global": true,
+            "filter": {
+                "region": [
+                    "wales"
+                ]
+            },
+            "subscribers": [
+                {
+                    "user": "megan.price@cambrialocal.example",
+                    "notification_type": "scheduled"
+                }
+            ]
+        }
+    ],
+    "dashboards": [
+        {
+            "owner": "joanne.firth@ridingspress.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Leeds",
+                    "filter": {
+                        "local_authority": [
+                            "leeds"
+                        ]
+                    }
+                },
+                {
+                    "label": "Bradford",
+                    "filter": {
+                        "local_authority": [
+                            "bradford"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "david.ainsworth@ridingspress.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Kirklees",
+                    "filter": {
+                        "local_authority": [
+                            "kirklees"
+                        ]
+                    }
+                },
+                {
+                    "label": "Sheffield",
+                    "filter": {
+                        "local_authority": [
+                            "sheffield"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "kerry.dodds@tynebridgemedia.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Newcastle",
+                    "filter": {
+                        "local_authority": [
+                            "newcastle"
+                        ]
+                    }
+                },
+                {
+                    "label": "Sunderland",
+                    "filter": {
+                        "local_authority": [
+                            "sunderland"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "paul.hedley@tynebridgemedia.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Northumberland",
+                    "filter": {
+                        "local_authority": [
+                            "northumberland"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "anita.sharma@shiresledger.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Birmingham",
+                    "filter": {
+                        "local_authority": [
+                            "birmingham"
+                        ]
+                    }
+                },
+                {
+                    "label": "Nottingham",
+                    "filter": {
+                        "local_authority": [
+                            "nottingham"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "chris.wheeler@shiresledger.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Coventry",
+                    "filter": {
+                        "local_authority": [
+                            "coventry"
+                        ]
+                    }
+                },
+                {
+                    "label": "Derbyshire",
+                    "filter": {
+                        "local_authority": [
+                            "derbyshire"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "gareth.lloyd@cambrialocal.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Cardiff",
+                    "filter": {
+                        "local_authority": [
+                            "cardiff"
+                        ]
+                    }
+                },
+                {
+                    "label": "Gwynedd",
+                    "filter": {
+                        "local_authority": [
+                            "gwynedd"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "megan.price@cambrialocal.example",
+            "name": "My Home",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Swansea",
+                    "filter": {
+                        "local_authority": [
+                            "swansea"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "owner": "sam.okoro@townhall-reporting.example",
+            "name": "All partners",
+            "type": "4-picture-text",
+            "watches": [
+                {
+                    "label": "Latest stories",
+                    "query": "profile:Story"
+                },
+                {
+                    "label": "Weekly advisories",
+                    "query": "profile:Weeklyadvisory"
+                },
+                {
+                    "label": "Yorkshire and the Humber",
+                    "filter": {
+                        "region": [
+                            "yorkshire_humber"
+                        ]
+                    }
+                },
+                {
+                    "label": "North East",
+                    "filter": {
+                        "region": [
+                            "north_east"
+                        ]
+                    }
+                },
+                {
+                    "label": "Midlands",
+                    "filter": {
+                        "region": [
+                            "west_midlands",
+                            "east_midlands"
+                        ]
+                    }
+                },
+                {
+                    "label": "Wales",
+                    "filter": {
+                        "region": [
+                            "wales"
+                        ]
+                    }
+                }
+            ]
+        }
+    ],
+    "cards": [],
+    "cleanup": {},
+    "monitoring": []
+}
