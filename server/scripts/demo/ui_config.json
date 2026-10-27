@@ -54,19 +54,13 @@
             "subjects": {
                 "displayed": false
             },
-            "local_authority": {
+            "topic": {
                 "displayed": true
             },
             "region": {
                 "displayed": true
             },
-            "distribution_profile": {
-                "displayed": true
-            },
-            "category": {
-                "displayed": true
-            },
-            "image_rights": {
+            "service": {
                 "displayed": true
             },
             "metadata_fields": [
@@ -129,19 +123,13 @@
             "subjects": {
                 "displayed": false
             },
-            "local_authority": {
+            "topic": {
                 "displayed": true
             },
             "region": {
                 "displayed": true
             },
-            "distribution_profile": {
-                "displayed": true
-            },
-            "category": {
-                "displayed": true
-            },
-            "image_rights": {
+            "service": {
                 "displayed": true
             },
             "metadata_fields": [
@@ -207,19 +195,13 @@
             "subjects": {
                 "displayed": false
             },
-            "local_authority": {
+            "topic": {
                 "displayed": true
             },
             "region": {
                 "displayed": true
             },
-            "distribution_profile": {
-                "displayed": true
-            },
-            "category": {
-                "displayed": true
-            },
-            "image_rights": {
+            "service": {
                 "displayed": true
             }
         },
@@ -227,19 +209,13 @@
             "subjects": {
                 "displayed": false
             },
-            "local_authority": {
+            "topic": {
                 "displayed": true
             },
             "region": {
                 "displayed": true
             },
-            "distribution_profile": {
-                "displayed": true
-            },
-            "category": {
-                "displayed": true
-            },
-            "image_rights": {
+            "service": {
                 "displayed": true
             }
         }

@@ -11,7 +11,7 @@ set -u
 
 # A digest of portal_seed.json, set by the generator, so a changed seed runs again on the next
 # deploy without anyone bumping a number. The seed is idempotent, so a re-run only adds and updates.
-SEED_VERSION="b1ce2ff25b33"
+SEED_VERSION="3cbbfdaee7e6"
 
 ADMIN_EMAIL="${PORTAL_ADMIN_EMAIL:-admin@example.com}"
 
@@ -56,12 +56,12 @@ action, version, admin_email = sys.argv[1:4]
 db = MongoClient(os.environ["MONGO_URI"], serverSelectionTimeoutMS=10000).get_database()
 
 if action == "marker-check":
-    sys.exit(0 if db["localwire_portal_seed"].find_one({"_id": version}) else 1)
+    sys.exit(0 if db["agency_portal_seed"].find_one({"_id": version}) else 1)
 
 if action == "admin-exists":
     sys.exit(0 if db["users"].find_one({"email": admin_email}) else 1)
 
-db["localwire_portal_seed"].replace_one(
+db["agency_portal_seed"].replace_one(
     {"_id": version},
     {"_id": version, "seeded_at": datetime.datetime.now(datetime.timezone.utc)},
     upsert=True,

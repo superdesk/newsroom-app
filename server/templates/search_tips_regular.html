@@ -24,12 +24,12 @@
     <hr />
     <div>
         <p><b>Searching by taxonomy</b></p>
-        <p>Local authority, region, distribution profile, category and image rights are stored as coded values. Search them by code, which is stable and does not change when a label is reworded.</p>
+        <p>Topic, region and wire service are stored as coded values. Search them by code, which is stable and does not change when a label is reworded.</p>
         <ul>
-            <li>Everything tagged North East<br /><code>subject.code:north_east</code></li>
-            <li>North East and All qualifying partners<br /><code>subject.code:north_east AND subject.code:all_partners</code></li>
+            <li>Everything tagged International wire<br /><code>subject.code:international</code></li>
+            <li>International wire and Politics<br /><code>subject.code:international AND subject.code:politics</code></li>
         </ul>
-        <p>You can search by label instead, but a label with a space has to be quoted: <code>subject.name:"Leeds City Council"</code>.</p>
+        <p>You can search by label instead, but a label with a space has to be quoted: <code>subject.name:"Conflict and security"</code>.</p>
         <p>For anything more than a quick lookup, use the filter panel on the left. Its filters are exact and they can be saved as a topic.</p>
     </div>
     <hr />
@@ -51,11 +51,9 @@
     <div>
         <p><b>Filters in the {{ config.WIRE_SECTION }}</b></p>
         <ul>
-            <li>Local authority</li>
+            <li>Topic</li>
             <li>Region</li>
-            <li>Distribution profile</li>
-            <li>Category</li>
-            <li>Image rights</li>
+            <li>Wire service</li>
             <li>Published date, a single date or a range</li>
         </ul>
         <p>Save any combination of filters and search terms as a topic to get an alert when a new item matches it, immediately or as a daily digest.</p>
