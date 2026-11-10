@@ -1,11 +1,18 @@
 name: "Lint"
 
-on: [ workflow_call ]
+on:
+  workflow_call:
+    inputs:
+      ubuntu-version:
+        description: "Ubuntu runner version"
+        required: false
+        default: "ubuntu-24.04"
+        type: string
 
 jobs:
 
   flake8:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.ubuntu-version }}
 
     defaults:
       run:
@@ -20,7 +27,7 @@ jobs:
       - run: flake8
 
   black:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.ubuntu-version }}
 
     defaults:
       run:
@@ -35,7 +42,7 @@ jobs:
       - run: black --check .
 
   mypy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.ubuntu-version }}
 
     defaults:
       run:

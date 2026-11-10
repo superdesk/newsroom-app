@@ -9,25 +9,31 @@ jobs:
     strategy:
       matrix:
         python-version: ['3.10']
+        ubuntu-version: ['ubuntu-24.04', 'ubuntu-26.04']
     uses: ./.github/workflows/server.yml
     with: 
         python-version: ${{ matrix.python-version }}
+        ubuntu-version: ${{ matrix.ubuntu-version }}
 
   pytest:
     strategy:
       matrix:
         python-version: ['3.10']
+        ubuntu-version: ['ubuntu-24.04', 'ubuntu-26.04']
     uses: ./.github/workflows/pytest.yml
     with:
         python-version: ${{ matrix.python-version }}
+        ubuntu-version: ${{ matrix.ubuntu-version }}
 
   behave:
     strategy:
       matrix:
         python-version: ['3.10']
+        ubuntu-version: ['ubuntu-24.04', 'ubuntu-26.04']
     uses: ./.github/workflows/behave.yml
     with:
         python-version: ${{ matrix.python-version }}
+        ubuntu-version: ${{ matrix.ubuntu-version }}
 
   client:
     strategy:
